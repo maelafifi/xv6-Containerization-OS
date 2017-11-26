@@ -104,6 +104,21 @@ extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_getticks(void);
+extern int sys_get_name(void);
+extern int sys_get_max_proc(void);
+extern int sys_get_max_mem(void);
+extern int sys_get_max_disk(void);
+extern int sys_get_curr_proc(void);
+extern int sys_get_curr_mem(void);
+extern int sys_get_curr_disk(void);
+extern int sys_set_name(void);
+extern int sys_set_max_mem(void);
+extern int sys_set_max_disk(void);
+extern int sys_set_max_proc(void);
+extern int sys_set_curr_mem(void);
+extern int sys_set_curr_disk(void);
+extern int sys_set_curr_proc(void);
+
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -128,6 +143,20 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_getticks] sys_getticks,
+[SYS_get_name] sys_get_name,
+[SYS_get_max_proc] sys_get_max_proc,
+[SYS_get_max_mem] sys_get_max_mem,
+[SYS_get_max_disk] sys_get_max_disk,
+[SYS_get_curr_proc] sys_get_curr_proc,
+[SYS_get_curr_mem] sys_get_curr_mem,
+[SYS_get_curr_disk] sys_get_curr_disk,
+[SYS_set_name] sys_set_name,
+[SYS_set_max_mem] sys_set_max_mem,
+[SYS_set_max_disk] sys_set_max_disk,
+[SYS_set_max_proc] sys_set_max_proc,
+[SYS_set_curr_mem] sys_set_curr_mem,
+[SYS_set_curr_disk] sys_set_curr_disk,
+[SYS_set_curr_proc] sys_set_curr_proc,
 };
 
 void

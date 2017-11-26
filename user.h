@@ -24,6 +24,36 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getticks(void);
+void get_name(char* name, int vc_num);
+int get_max_proc(int vc_num);
+int get_max_mem(int vc_num);
+int get_max_disk(int vc_num);
+int get_curr_proc(int vc_num);
+int get_curr_mem(int vc_num);
+int get_curr_disk(int vc_num);
+void set_name(char* name, int vc_num);
+void set_max_mem(int mem, int vc_num);
+void set_max_disk(int disk, int vc_num);
+void set_max_proc(int procs, int vc_num);
+void set_curr_mem(int mem, int vc_num);
+void set_curr_disk(int disk, int vc_num);
+void set_curr_proc(int procs, int vc_num);
+
+// // container.c
+// void get_name(char* name, int vc_num);
+// int get_max_proc(int vc_num);
+// int get_max_mem(int vc_num);
+// int get_max_disk(int vc_num);
+// int get_curr_proc(int vc_num);
+// int get_curr_mem(int vc_num);
+// int get_curr_disk(int vc_num);
+// void set_name(char* name, int vc_num);
+// void set_max_mem(int mem, int vc_num);
+// void set_max_disk(int disk, int vc_num);
+// void set_max_proc(int procs, int vc_num);
+// void set_curr_mem(int mem, int vc_num);
+// void set_curr_disk(int disk, int vc_num);
+// void set_curr_proc(int procs, int vc_num);
 
 // ulib.c
 int stat(char*, struct stat*);

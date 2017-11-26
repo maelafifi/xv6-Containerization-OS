@@ -21,3 +21,17 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_getticks 22
+#define SYS_get_name 23
+#define SYS_get_max_proc 24
+#define SYS_get_max_mem 25
+#define SYS_get_max_disk 26
+#define SYS_get_curr_proc 27
+#define SYS_get_curr_mem 28
+#define SYS_get_curr_disk 29
+#define SYS_set_name 30
+#define SYS_set_max_mem 31
+#define SYS_set_max_disk 32
+#define SYS_set_max_proc 33
+#define SYS_set_curr_mem 34
+#define SYS_set_curr_disk 35
+#define SYS_set_curr_proc 36
