@@ -11,13 +11,13 @@
 00000000 .debug_str
 00000000 .debug_loc
 00000000 ls.c
-00000df0 buf.1076
+00000df0 buf.1080
 00000000 ulib.c
 00000354 stosb
 00000000 printf.c
 00000650 putc
 00000678 printint
-00000ddc digits.1065
+00000ddc digits.1069
 00000000 umalloc.c
 00000e00 base
 00000e08 freep
