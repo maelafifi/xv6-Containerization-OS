@@ -1,5 +1,5 @@
 // Per-CPU state
-struct cpu {
+struct cpu { 
   uchar apicid;                // Local APIC ID
   struct context *scheduler;   // swtch() here to enter scheduler
   struct taskstate ts;         // Used by x86 to find stack for interrupt

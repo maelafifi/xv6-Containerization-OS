@@ -5,7 +5,7 @@
 #include "mmu.h"
 #include "x86.h"
 #include "proc.h"
-#include "spinlock.h"
+#include "spinlock.h" 
 
 struct {
   struct spinlock lock;
