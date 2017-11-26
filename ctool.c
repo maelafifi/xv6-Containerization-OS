@@ -23,15 +23,23 @@ void create(char *c_args[]){
 	//create->max_disk = atoi(c_args2[3]);
 	mkdir(c_args[0]);
 	//chdir(create->name);
+
 	
-	int i = 1;
-	int arg_size = (int) (sizeof(c_args)/sizeof(char*));
-	for(i = i; i < arg_size; i++){
+	int x = 0;
+	while(c_args[x] != 0){
+			x++;
+	}
+
+	printf(1, "%d\n", x);
+	int i;
+	for(i = 1; i <= x; i++){
 		char* location = strcat(strcat(c_args[0], "/"), c_args[i]);
 		int id = fork();
-
+		
 		if(id == 0){
 			char *arr[] = {"cat", "<", c_args[i], ">", location,0};
+			printf(1, "%s\n", arr[1]);
+			printf(1, "%s\n", arr[2]);
 			exec("cat", arr);
 			printf(1, "Failure to Execute.");
 			exit();
@@ -102,7 +110,7 @@ void info(char *c_name){
 }
 
 int main(int argc, char *argv[]){
-	if(strcmp(argv[1], "create")){
+	if(strcmp(argv[1], "create") == 0){
 		create(&argv[2]);
 	}
 	else if(strcmp(argv[1], "start") == 0){

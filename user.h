@@ -1,6 +1,8 @@
+#include "types.h"
+
 struct stat;
 struct rtcdate;
-#include "types.h"
+
 // system calls
 int fork(void);
 int exit(void) __attribute__((noreturn));

@@ -26,7 +26,6 @@ OBJS = \
 	trap.o\
 	uart.o\
 	vectors.o\
-	ctool.o\
 	vm.o\
 	container.o\
 
@@ -176,7 +175,6 @@ UPROGS=\
 	_mkdir\
 	_rm\
 	_sh\
-	_ctool\
 	_stressfs\
 	_usertests\
 	_wc\
@@ -184,6 +182,7 @@ UPROGS=\
 	_echoloop\
 	_vctest\
 	_tickstest\
+	_ctool\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -252,8 +251,8 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
 
 EXTRA=\
 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
-	ln.c ctool.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
-	printf.c umalloc.c echoloop.c tickstest.c\
+	ln.c  ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
+	printf.c umalloc.c echoloop.c tickstest.c ctool.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\
 
