@@ -37,6 +37,13 @@ void copy_files(char* loc, char* src){
 	close(fd_read);
 }
 
+void init(){
+
+
+	container_init();
+
+}
+
 void create(char *c_args[]){
 	// //struct container create;
 	// //create->name = c_args[0];
@@ -80,6 +87,7 @@ void attach_vc(char* vc, char* dir, char* file){
 	//TODO Check tosee file in file system
 
 	chdir(dir);
+	// chroot(dir);
 
 	/* fork a child and exec argv[1] */
 	id = fork();
@@ -100,11 +108,11 @@ void attach_vc(char* vc, char* dir, char* file){
 void start(char *s_args[]){
 	//int arg_size = (int) (sizeof(s_args)/sizeof(char*));
 	//int i;
-	//int index;
-	// if((index = next_open_index()) < 0){
-	// 	printf(1, "No Available Containers.\n");
-	// 	return;
-	// }
+	int index = 0;
+	if((index = is_full()) < 0){
+		printf(1, "No Available Containers.\n");
+		return;
+	}
 
 	int x = 0;
 	while(s_args[x] != 0){
@@ -122,7 +130,9 @@ void start(char *s_args[]){
 	// }
 
 	//ASsume they give us the values for now
-	// set_max_a
+	// set_max_proc(atoi(s_args[3]), index);
+	// set_max_mem(atoi(s_args[4]), index);
+	// set_max_disk(atoi(s_args[5]), index);
 
 	attach_vc(vc, dir, file);
 
@@ -156,7 +166,10 @@ void info(char *c_name){
 }
 
 int main(int argc, char *argv[]){
-	if(strcmp(argv[1], "create") == 0){
+	if(strcmp(argv[1], "init") == 0){
+		init();
+	}
+	else if(strcmp(argv[1], "create") == 0){
 		printf(1, "Calling create\n");
 		create(&argv[2]);
 	}

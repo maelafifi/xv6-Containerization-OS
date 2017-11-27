@@ -118,7 +118,9 @@ extern int sys_set_max_proc(void);
 extern int sys_set_curr_mem(void);
 extern int sys_set_curr_disk(void);
 extern int sys_set_curr_proc(void);
-
+extern int sys_find(void);
+extern int sys_is_full(void);
+extern int sys_container_init(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -157,6 +159,9 @@ static int (*syscalls[])(void) = {
 [SYS_set_curr_mem] sys_set_curr_mem,
 [SYS_set_curr_disk] sys_set_curr_disk,
 [SYS_set_curr_proc] sys_set_curr_proc,
+[SYS_find] sys_find,
+[SYS_is_full] sys_is_full,
+[SYS_container_init] sys_container_init,
 };
 
 void

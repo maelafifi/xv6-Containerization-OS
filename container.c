@@ -29,10 +29,10 @@ void get_name(char* name, int vc_num){
 	strcpy(name, x.name);
 }
 
-int next_open_index(){
+int is_full(){
 	int i;
 	for(i = 0; i < MAX_CONTAINERS; i++){
-		if(containers[i].name != NULL){
+		if(strlen(containers[i].name) == 0){
 			return i;
 		}
 	}
@@ -108,4 +108,19 @@ void set_curr_disk(int disk, int vc_num){
 
 void set_curr_proc(int procs, int vc_num){
 	containers[vc_num].curr_proc = procs;	
+}
+
+void container_init(){
+
+	int i;
+
+	for(i = 0; i < MAX_CONTAINERS; i++){
+		containers[i].name = "";
+		containers[i].max_proc = 4;
+		containers[i].max_disk = 100;
+		containers[i].max_mem = 100;
+		containers[i].curr_proc = 1;
+		containers[i].curr_disk = 0;
+		containers[i].curr_mem = 0;
+	}
 }

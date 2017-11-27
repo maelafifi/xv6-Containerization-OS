@@ -39,7 +39,7 @@ forktest(void)
   int n, pid;
 
   printf(1, "fork test\n");
-  2f:	c7 44 24 04 10 04 00 	movl   $0x410,0x4(%esp)
+  2f:	c7 44 24 04 98 04 00 	movl   $0x498,0x4(%esp)
   36:	00 
   37:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   3e:	e8 bd ff ff ff       	call   0 <printf>
@@ -80,7 +80,7 @@ forktest(void)
     printf(1, "fork claimed to work N times!\n", N);
   7c:	c7 44 24 08 e8 03 00 	movl   $0x3e8,0x8(%esp)
   83:	00 
-  84:	c7 44 24 04 1c 04 00 	movl   $0x41c,0x4(%esp)
+  84:	c7 44 24 04 a4 04 00 	movl   $0x4a4,0x4(%esp)
   8b:	00 
   8c:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   93:	e8 68 ff ff ff       	call   0 <printf>
@@ -95,7 +95,7 @@ forktest(void)
   a4:	85 c0                	test   %eax,%eax
   a6:	79 19                	jns    c1 <forktest+0x98>
       printf(1, "wait stopped early\n");
-  a8:	c7 44 24 04 3b 04 00 	movl   $0x43b,0x4(%esp)
+  a8:	c7 44 24 04 c3 04 00 	movl   $0x4c3,0x4(%esp)
   af:	00 
   b0:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   b7:	e8 44 ff ff ff       	call   0 <printf>
@@ -120,7 +120,7 @@ forktest(void)
   cf:	83 f8 ff             	cmp    $0xffffffff,%eax
   d2:	74 19                	je     ed <forktest+0xc4>
     printf(1, "wait got too many\n");
-  d4:	c7 44 24 04 4f 04 00 	movl   $0x44f,0x4(%esp)
+  d4:	c7 44 24 04 d7 04 00 	movl   $0x4d7,0x4(%esp)
   db:	00 
   dc:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   e3:	e8 18 ff ff ff       	call   0 <printf>
@@ -129,7 +129,7 @@ forktest(void)
   }
 
   printf(1, "fork test OK\n");
-  ed:	c7 44 24 04 62 04 00 	movl   $0x462,0x4(%esp)
+  ed:	c7 44 24 04 ea 04 00 	movl   $0x4ea,0x4(%esp)
   f4:	00 
   f5:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   fc:	e8 ff fe ff ff       	call   0 <printf>
@@ -689,6 +689,109 @@ SYSCALL(uptime)
  407:	c3                   	ret    
 
 00000408 <getticks>:
+SYSCALL(getticks)
  408:	b8 16 00 00 00       	mov    $0x16,%eax
  40d:	cd 40                	int    $0x40
  40f:	c3                   	ret    
+
+00000410 <get_name>:
+SYSCALL(get_name)
+ 410:	b8 17 00 00 00       	mov    $0x17,%eax
+ 415:	cd 40                	int    $0x40
+ 417:	c3                   	ret    
+
+00000418 <get_max_proc>:
+SYSCALL(get_max_proc)
+ 418:	b8 18 00 00 00       	mov    $0x18,%eax
+ 41d:	cd 40                	int    $0x40
+ 41f:	c3                   	ret    
+
+00000420 <get_max_mem>:
+SYSCALL(get_max_mem)
+ 420:	b8 19 00 00 00       	mov    $0x19,%eax
+ 425:	cd 40                	int    $0x40
+ 427:	c3                   	ret    
+
+00000428 <get_max_disk>:
+SYSCALL(get_max_disk)
+ 428:	b8 1a 00 00 00       	mov    $0x1a,%eax
+ 42d:	cd 40                	int    $0x40
+ 42f:	c3                   	ret    
+
+00000430 <get_curr_proc>:
+SYSCALL(get_curr_proc)
+ 430:	b8 1b 00 00 00       	mov    $0x1b,%eax
+ 435:	cd 40                	int    $0x40
+ 437:	c3                   	ret    
+
+00000438 <get_curr_mem>:
+SYSCALL(get_curr_mem)
+ 438:	b8 1c 00 00 00       	mov    $0x1c,%eax
+ 43d:	cd 40                	int    $0x40
+ 43f:	c3                   	ret    
+
+00000440 <get_curr_disk>:
+SYSCALL(get_curr_disk)
+ 440:	b8 1d 00 00 00       	mov    $0x1d,%eax
+ 445:	cd 40                	int    $0x40
+ 447:	c3                   	ret    
+
+00000448 <set_name>:
+SYSCALL(set_name)
+ 448:	b8 1e 00 00 00       	mov    $0x1e,%eax
+ 44d:	cd 40                	int    $0x40
+ 44f:	c3                   	ret    
+
+00000450 <set_max_mem>:
+SYSCALL(set_max_mem)
+ 450:	b8 1f 00 00 00       	mov    $0x1f,%eax
+ 455:	cd 40                	int    $0x40
+ 457:	c3                   	ret    
+
+00000458 <set_max_disk>:
+SYSCALL(set_max_disk)
+ 458:	b8 20 00 00 00       	mov    $0x20,%eax
+ 45d:	cd 40                	int    $0x40
+ 45f:	c3                   	ret    
+
+00000460 <set_max_proc>:
+SYSCALL(set_max_proc)
+ 460:	b8 21 00 00 00       	mov    $0x21,%eax
+ 465:	cd 40                	int    $0x40
+ 467:	c3                   	ret    
+
+00000468 <set_curr_mem>:
+SYSCALL(set_curr_mem)
+ 468:	b8 22 00 00 00       	mov    $0x22,%eax
+ 46d:	cd 40                	int    $0x40
+ 46f:	c3                   	ret    
+
+00000470 <set_curr_disk>:
+SYSCALL(set_curr_disk)
+ 470:	b8 23 00 00 00       	mov    $0x23,%eax
+ 475:	cd 40                	int    $0x40
+ 477:	c3                   	ret    
+
+00000478 <set_curr_proc>:
+SYSCALL(set_curr_proc)
+ 478:	b8 24 00 00 00       	mov    $0x24,%eax
+ 47d:	cd 40                	int    $0x40
+ 47f:	c3                   	ret    
+
+00000480 <find>:
+SYSCALL(find)
+ 480:	b8 25 00 00 00       	mov    $0x25,%eax
+ 485:	cd 40                	int    $0x40
+ 487:	c3                   	ret    
+
+00000488 <is_full>:
+SYSCALL(is_full)
+ 488:	b8 26 00 00 00       	mov    $0x26,%eax
+ 48d:	cd 40                	int    $0x40
+ 48f:	c3                   	ret    
+
+00000490 <container_init>:
+SYSCALL(container_init)
+ 490:	b8 27 00 00 00       	mov    $0x27,%eax
+ 495:	cd 40                	int    $0x40
+ 497:	c3                   	ret    

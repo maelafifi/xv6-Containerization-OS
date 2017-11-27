@@ -12,7 +12,7 @@ struct container{
 
 void get_name(char* name, int vc_num);
 int find(char* name);
-int next_open_index();
+int is_full();
 int get_max_proc(int vc_num);
 int get_max_mem(int vc_num);
 int get_max_disk(int vc_num);
@@ -26,3 +26,4 @@ void set_max_proc(int procs, int vc_num);
 void set_curr_mem(int mem, int vc_num);
 void set_curr_disk(int disk, int vc_num);
 void set_curr_proc(int procs, int vc_num);
+void container_init();

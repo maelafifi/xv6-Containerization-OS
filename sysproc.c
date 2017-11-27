@@ -78,6 +78,21 @@ sys_sleep(void)
   return 0;
 }
 
+void sys_container_init(){
+  container_init();
+}
+
+int sys_is_full(void){
+  return is_full();
+}
+
+int sys_find(void){
+  char* name;
+  fetchstr(0, &name);
+
+  return find(name);
+}
+
 void sys_get_name(void){
 
   char* name;

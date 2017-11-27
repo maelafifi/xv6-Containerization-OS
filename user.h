@@ -41,6 +41,10 @@ void set_max_proc(int procs, int vc_num);
 void set_curr_mem(int mem, int vc_num);
 void set_curr_disk(int disk, int vc_num);
 void set_curr_proc(int procs, int vc_num);
+int find(char*);
+int is_full(void);
+void container_init(void);
+
 
 // ulib.c
 int stat(char*, struct stat*);

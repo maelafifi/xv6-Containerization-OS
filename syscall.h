@@ -35,3 +35,6 @@
 #define SYS_set_curr_mem 34
 #define SYS_set_curr_disk 35
 #define SYS_set_curr_proc 36
+#define SYS_find 37
+#define SYS_is_full 38
+#define SYS_container_init 39
