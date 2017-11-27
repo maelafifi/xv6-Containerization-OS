@@ -33,6 +33,8 @@ static int active = 1;
 
 struct input buf1 = {"", 0, 0, 0};
 struct input buf2 = {"", 0, 0, 0};
+struct input buf3 = {"", 0, 0, 0};
+struct input buf4 = {"", 0, 0, 0};
 
 static struct {
   struct spinlock lock;
@@ -223,11 +225,21 @@ consoleintr(int (*getc)(void))
         active = 2;
         buf1 = input;
         input = buf2;
+      }
+      else if(active == 2){
+        active = 3;
+        buf2 = input;
+        input = buf3;
+      }
+      else if(active == 3){
+        active = 4;
+        buf3 = input;
+        input = buf4;
       }else{
         active = 1;
-        buf2 = input;
+        buf4 = input;
         input = buf1;
-      } 
+      }
       doconsoleswitch = 1;
       break;
     case C('U'):  // Kill line.
