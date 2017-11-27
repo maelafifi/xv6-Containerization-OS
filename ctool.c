@@ -3,7 +3,6 @@
 #include "user.h"
 #include "fcntl.h"
 
-
 char* strcat(char* s1, const char* s2)
 {
   char* b = s1;
@@ -101,8 +100,31 @@ void attach_vc(char* vc, char* dir, char* file){
 void start(char *s_args[]){
 	//int arg_size = (int) (sizeof(s_args)/sizeof(char*));
 	//int i;
+	//int index;
+	// if((index = next_open_index()) < 0){
+	// 	printf(1, "No Available Containers.\n");
+	// 	return;
+	// }
 
+	int x = 0;
+	while(s_args[x] != 0){
+			x++;
+	}
 
+	//Make a VC in use function that checks if that VC is in use by a container
+	char* vc = s_args[0];
+	char* dir = s_args[1];
+	char* file = s_args[2];
+
+	// if(find(dir) == 0){
+	// 	printf(1, "Container already in use.\n");
+	// 	return;
+	// }
+
+	//ASsume they give us the values for now
+	// set_max_a
+
+	attach_vc(vc, dir, file);
 
 	// for (i = 0; i < arg_size; ++i){
 	// 	if(s_args[i] == '-p'){

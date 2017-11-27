@@ -7,8 +7,12 @@ struct container{
 	//char *progs[];
 };
 
+//TODO Maybe add a vc so we know if a VC is already taken
+
 
 void get_name(char* name, int vc_num);
+int find(char* name);
+int next_open_index();
 int get_max_proc(int vc_num);
 int get_max_mem(int vc_num);
 int get_max_disk(int vc_num);

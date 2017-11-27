@@ -225,8 +225,18 @@ consoleintr(int (*getc)(void))
       // procdump() locks cons.lock indirectly; invoke later
       if (active+1 > MAX_VC){
         active = 1;
+        input = buf1;
       } else{
         active = active + 1;
+        if(active == 2){
+          buf2 = input;
+        }
+        if(active == 3){
+          buf3 = input;
+        }
+        if(active == 4){
+          buf4 = input;
+        }
       }
       doconsoleswitch = 1;
       break;

@@ -1,6 +1,7 @@
 #include "user.h"
 #include "container.h"
 
+#define NULL ((void*)0)
 #define MAX_CONTAINERS 4
 
 struct container containers[MAX_CONTAINERS];
@@ -14,10 +15,41 @@ char* strcpy(char *s, char *t){
   return os;
 }
 
+int
+strcmp(const char *p, const char *q)
+{
+  while(*p && *p == *q)
+    p++, q++;
+  return (uchar)*p - (uchar)*q;
+}
+
 void get_name(char* name, int vc_num){
 
 	struct container x = containers[vc_num];
 	strcpy(name, x.name);
+}
+
+int next_open_index(){
+	int i;
+	for(i = 0; i < MAX_CONTAINERS; i++){
+		if(containers[i].name != NULL){
+			return i;
+		}
+	}
+	return -1;
+}
+
+int find(char* name){
+	int i;
+	for(i = 0; i < MAX_CONTAINERS; i++){
+		if(containers[i].name == NULL){
+			continue;
+		}
+		if(strcmp(name, containers[i].name) == 0){
+			return 0;
+		}
+	}
+	return -1;
 }
 
 int get_max_proc(int vc_num){
