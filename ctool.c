@@ -15,14 +15,37 @@ char* strcat(char* s1, const char* s2)
   return b;
 }
 
+void copy_files(char* loc, char* src){
+	int fd_write = open(loc, O_CREATE | O_RDWR);
+	if(fd_write < 0){
+		printf(1, "Invalid file location.\n");
+		return;
+	}
+
+	int fd_read = open(src, O_RDONLY);
+	if(fd_read < 0){
+		printf(1, "Invalid file location.\n");
+		return;
+	}
+
+	int bytes_read;
+	char buf[512];
+
+	while((bytes_read = read(fd_read, buf, sizeof(buf))) > 0){
+		write(fd_write, buf, bytes_read);
+	}
+	close(fd_write);
+	close(fd_read);
+}
+
 void create(char *c_args[]){
-	//struct container create;
-	//create->name = c_args[0];
-	//create->max_mem = atoi(c_args[1]);
-	//create->max_proc = atoi(c_args2[2]);
-	//create->max_disk = atoi(c_args2[3]);
+	// //struct container create;
+	// //create->name = c_args[0];
+	// //create->max_mem = atoi(c_args[1]);
+	// //create->max_proc = atoi(c_args2[2]);
+	// //create->max_disk = atoi(c_args2[3]);
 	mkdir(c_args[0]);
-	//chdir(create->name);
+	// //chdir(create->name);
 
 	
 	int x = 0;
@@ -30,21 +53,22 @@ void create(char *c_args[]){
 			x++;
 	}
 
-	printf(1, "%d\n", x);
 	int i;
-	for(i = 1; i <= x; i++){
-		char* location = strcat(strcat(c_args[0], "/"), c_args[i]);
-		int id = fork();
-		
-		if(id == 0){
-			char *arr[] = {"cat", "<", c_args[i], ">", location,0};
-			printf(1, "%s\n", arr[1]);
-			printf(1, "%s\n", arr[2]);
-			exec("cat", arr);
-			printf(1, "Failure to Execute.");
-			exit();
-		}
-		wait();
+	for(i = 1; i < x; i++){
+		printf(1, "%s.\n", c_args[i]);
+
+		char dir[strlen(c_args[0])];
+		strcpy(dir, c_args[0]);
+		strcat(dir, "/");
+		char* location = strcat(dir, c_args[i]);
+
+		printf(1, "Location: %s.\n", location);
+
+		copy_files(location, c_args[i]);
+
+		// exec("echo", arr);
+		// printf(1, "Failure to Execute.");
+		// exit();
 	}
 }
 
@@ -111,6 +135,7 @@ void info(char *c_name){
 
 int main(int argc, char *argv[]){
 	if(strcmp(argv[1], "create") == 0){
+		printf(1, "Calling create\n");
 		create(&argv[2]);
 	}
 	else if(strcmp(argv[1], "start") == 0){
@@ -129,7 +154,10 @@ int main(int argc, char *argv[]){
 	// 	info(&argv[2]);
 	// }
 	else{
-		printf(1, "Improper usage; create, start, pause, resume, stop, info");
+		printf(1, "Improper usage; create, start, pause, resume, stop, info.\n");
 	}
-	return 0;
+	printf(1, "Done with ctool\n");
+
+	//Fucking main DOESNT RETURN 0 IT EXITS or else you get a trap error and then spend an hour seeing where you messed up. 
+	exit();
 }
