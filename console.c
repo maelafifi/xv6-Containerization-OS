@@ -19,6 +19,8 @@
 
 static void consputc(int);
 
+
+#define MAX_VC 4
 #define INPUT_BUF 128
 struct input {
   char buf[INPUT_BUF];
@@ -221,24 +223,10 @@ consoleintr(int (*getc)(void))
       break;
     case C('T'):  // Process listing.
       // procdump() locks cons.lock indirectly; invoke later
-      if (active == 1){
-        active = 2;
-        buf1 = input;
-        input = buf2;
-      }
-      else if(active == 2){
-        active = 3;
-        buf2 = input;
-        input = buf3;
-      }
-      else if(active == 3){
-        active = 4;
-        buf3 = input;
-        input = buf4;
-      }else{
+      if (active+1 > MAX_VC){
         active = 1;
-        buf4 = input;
-        input = buf1;
+      } else{
+        active = active + 1;
       }
       doconsoleswitch = 1;
       break;
