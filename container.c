@@ -53,8 +53,9 @@ int find(char* name){
 }
 
 int get_max_proc(int vc_num){
-	struct container x = containers[vc_num];
-	return x.max_proc;
+	// struct container x = containers[vc_num];
+	// return x.max_proc;
+	return vc_num;
 }
 
 int get_max_mem(int vc_num){
@@ -115,7 +116,7 @@ void container_init(){
 	int i;
 
 	for(i = 0; i < MAX_CONTAINERS; i++){
-		containers[i].name = "";
+		strcpy(containers[i].name, "");
 		containers[i].max_proc = 4;
 		containers[i].max_disk = 100;
 		containers[i].max_mem = 100;

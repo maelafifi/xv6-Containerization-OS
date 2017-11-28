@@ -119,15 +119,19 @@ void start(char *s_args[]){
 			x++;
 	}
 
+	printf(1, "Open container at %d\n", index);
+
 	//Make a VC in use function that checks if that VC is in use by a container
 	char* vc = s_args[0];
 	char* dir = s_args[1];
 	char* file = s_args[2];
 
-	// if(find(dir) == 0){
-	// 	printf(1, "Container already in use.\n");
-	// 	return;
-	// }
+	if(find(dir) == 0){
+		printf(1, "Container already in use.\n");
+		return;
+	}
+
+	set_name(dir, index);
 
 	//ASsume they give us the values for now
 	// set_max_proc(atoi(s_args[3]), index);

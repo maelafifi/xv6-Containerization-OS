@@ -88,7 +88,7 @@ int sys_is_full(void){
 
 int sys_find(void){
   char* name;
-  fetchstr(0, &name);
+  argstr(0, &name);
 
   return find(name);
 }
@@ -96,10 +96,10 @@ int sys_find(void){
 void sys_get_name(void){
 
   char* name;
-  fetchstr(0, &name);
+  argstr(0, &name);
 
   int vc_num;
-  fetchint(1, &vc_num);
+  argint(1, &vc_num);
 
   get_name(name, vc_num);
   return;
@@ -107,7 +107,7 @@ void sys_get_name(void){
 
 int sys_get_max_proc(void){
   int vc_num;
-  fetchint(0, &vc_num);
+  argint(0, &vc_num);
 
 
   return get_max_proc(vc_num);  
@@ -115,7 +115,7 @@ int sys_get_max_proc(void){
 
 int sys_get_max_mem(void){
   int vc_num;
-  fetchint(0, &vc_num);
+  argint(0, &vc_num);
 
 
   return get_max_mem(vc_num);
@@ -123,7 +123,7 @@ int sys_get_max_mem(void){
 
 int sys_get_max_disk(void){
   int vc_num;
-  fetchint(0, &vc_num);
+  argint(0, &vc_num);
 
 
   return get_max_disk(vc_num);
@@ -132,7 +132,7 @@ int sys_get_max_disk(void){
 
 int sys_get_curr_proc(void){
   int vc_num;
-  fetchint(0, &vc_num);
+  argint(0, &vc_num);
 
 
   return get_curr_proc(vc_num);
@@ -140,7 +140,7 @@ int sys_get_curr_proc(void){
 
 int sys_get_curr_mem(void){
   int vc_num;
-  fetchint(0, &vc_num);
+  argint(0, &vc_num);
 
 
   return get_curr_mem(vc_num);
@@ -148,7 +148,7 @@ int sys_get_curr_mem(void){
 
 int sys_get_curr_disk(void){
   int vc_num;
-  fetchint(0, &vc_num);
+  argint(0, &vc_num);
 
 
   return get_curr_disk(vc_num);
@@ -156,70 +156,70 @@ int sys_get_curr_disk(void){
 
 void sys_set_name(void){
   char* name;
-  fetchstr(0, &name);
+  argstr(0, &name);
 
   int vc_num;
-  fetchint(1, &vc_num);
+  argint(1, &vc_num);
 
   set_name(name, vc_num);
 }
 
 void sys_set_max_mem(void){
   int mem;
-  fetchint(0, &mem);
+  argint(0, &mem);
 
   int vc_num;
-  fetchint(1, &vc_num);
+  argint(1, &vc_num);
 
   set_max_mem(mem, vc_num);
 }
 
 void sys_set_max_disk(void){
   int disk;
-  fetchint(0, &disk);
+  argint(0, &disk);
 
   int vc_num;
-  fetchint(1, &vc_num);
+  argint(1, &vc_num);
 
   set_max_disk(disk, vc_num);
 }
 
 void sys_set_max_proc(void){
   int proc;
-  fetchint(0, &proc);
+  argint(0, &proc);
 
   int vc_num;
-  fetchint(1, &vc_num);
+  argint(1, &vc_num);
 
   set_max_proc(proc, vc_num);
 }
 
 void sys_set_curr_mem(void){
   int mem;
-  fetchint(0, &mem);
+  argint(0, &mem);
 
   int vc_num;
-  fetchint(1, &vc_num);
+  argint(1, &vc_num);
 
   set_curr_mem(mem, vc_num);
 }
 
 void sys_set_curr_disk(void){
   int disk;
-  fetchint(0, &disk);
+  argint(0, &disk);
 
   int vc_num;
-  fetchint(1, &vc_num);
+  argint(1, &vc_num);
 
   set_curr_disk(disk, vc_num);
 }
 
 void sys_set_curr_proc(void){
   int proc;
-  fetchint(0, &proc);
+  argint(0, &proc);
 
   int vc_num;
-  fetchint(1, &vc_num);
+  argint(1, &vc_num);
 
   set_curr_proc(proc, vc_num);
 }

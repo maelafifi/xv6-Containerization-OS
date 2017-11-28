@@ -3,7 +3,7 @@
 struct container{
 	int max_mem, max_proc, max_disk;
 	int curr_mem, curr_proc, curr_disk;
-	char *name;
+	char name[32];
 	//char *progs[];
 };
 
