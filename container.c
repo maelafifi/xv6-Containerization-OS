@@ -24,7 +24,6 @@ strcmp(const char *p, const char *q)
 }
 
 void get_name(char* name, int vc_num){
-
 	struct container x = containers[vc_num];
 	strcpy(name, x.name);
 }
@@ -46,16 +45,15 @@ int find(char* name){
 			continue;
 		}
 		if(strcmp(name, containers[i].name) == 0){
-			return 0;
+			return i;
 		}
 	}
 	return -1;
 }
 
 int get_max_proc(int vc_num){
-	// struct container x = containers[vc_num];
-	// return x.max_proc;
-	return vc_num;
+	struct container x = containers[vc_num];
+	return x.max_proc;
 }
 
 int get_max_mem(int vc_num){
@@ -104,7 +102,7 @@ void set_curr_mem(int mem, int vc_num){
 }
 
 void set_curr_disk(int disk, int vc_num){
-	containers[vc_num].curr_disk = disk;
+	containers[vc_num].curr_disk += disk;
 }
 
 void set_curr_proc(int procs, int vc_num){

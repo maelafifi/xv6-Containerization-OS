@@ -38,21 +38,28 @@ void copy_files(char* loc, char* src){
 }
 
 void init(){
-
-
 	container_init();
-
 }
 
-void create(char *c_args[]){
-	// //struct container create;
-	// //create->name = c_args[0];
-	// //create->max_mem = atoi(c_args[1]);
-	// //create->max_proc = atoi(c_args2[2]);
-	// //create->max_disk = atoi(c_args2[3]);
-	mkdir(c_args[0]);
-	// //chdir(create->name);
+void name(){
+	char x[32];
+	char y[32];
+	char z[32];
+	char a[32];
+	get_name(x, 0);
+	get_name(y, 1);
+	get_name(z, 2);
+	get_name(a, 3);
+	int b = get_curr_disk(0);
+	int c = get_curr_disk(1);
+	int d = get_curr_disk(2);
+	int e = get_curr_disk(3);
+	printf(1, "0: %s - %d, 1: %s - %d, 2: %s - %d, 3: %s - %d\n", x, b, y, c, z, d, a, e);
+}
 
+
+void create(char *c_args[]){
+	mkdir(c_args[0]);
 	
 	int x = 0;
 	while(c_args[x] != 0){
@@ -60,21 +67,16 @@ void create(char *c_args[]){
 	}
 
 	int i;
+	int vc_num = is_full();
+	set_name(c_args[0], vc_num);
 	for(i = 1; i < x; i++){
 		printf(1, "%s.\n", c_args[i]);
-
 		char dir[strlen(c_args[0])];
 		strcpy(dir, c_args[0]);
 		strcat(dir, "/");
 		char* location = strcat(dir, c_args[i]);
-
 		printf(1, "Location: %s.\n", location);
-
 		copy_files(location, c_args[i]);
-
-		// exec("echo", arr);
-		// printf(1, "Failure to Execute.");
-		// exit();
 	}
 }
 
@@ -179,6 +181,9 @@ int main(int argc, char *argv[]){
 	}
 	else if(strcmp(argv[1], "start") == 0){
 		start(&argv[2]);
+	}
+	else if(strcmp(argv[1], "name") == 0){
+		name();
 	}
 	// else if(argv[1] == 'pause'){
 	// 	pause(&argv[2]);

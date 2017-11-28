@@ -9,6 +9,25 @@
 #include "spinlock.h"
 #include "sleeplock.h"
 #include "file.h"
+#include "container.h"
+
+
+
+char* strcpy1(char *s, char *t){
+  char *os;
+
+  os = s;
+  while((*s++ = *t++) != 0)
+    ;
+  return os;
+}
+
+int
+strcmp2(const char *p, const char *q){
+  while(*p && *p == *q)
+    p++, q++;
+  return (uchar)*p - (uchar)*q;
+}
 
 struct devsw devsw[NDEV];
 struct {
@@ -118,6 +137,17 @@ int
 filewrite(struct file *f, char *addr, int n)
 {
   int r;
+  int i;
+  char x[32];
+  x[0] = '\0';
+
+  for(i = 0; i < 32; i++){
+    x[i] = f->path[i];
+    if(f->path[i] == '/'){
+      x[i] = '\0';
+      break;
+    }
+  }
 
   if(f->writable == 0)
     return -1;
@@ -139,8 +169,13 @@ filewrite(struct file *f, char *addr, int n)
 
       begin_op();
       ilock(f->ip);
-      if ((r = writei(f->ip, addr + i, f->off, n1)) > 0)
+      if ((r = writei(f->ip, addr + i, f->off, n1)) > 0){
         f->off += r;
+        int c_num = find(x);
+        if(c_num >= 0){
+          set_curr_disk(r, c_num);
+        }
+      }
       iunlock(f->ip);
       end_op();
 
