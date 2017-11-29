@@ -5,7 +5,8 @@
 #include "mmu.h"
 #include "x86.h"
 #include "proc.h"
-#include "spinlock.h" 
+#include "spinlock.h"
+#include "container.h"
 
 struct {
   struct spinlock lock;
@@ -533,4 +534,71 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+
+// char* strcpy(char *s, char *t){
+//   char *os;
+
+//   os = s;
+//   while((*s++ = *t++) != 0)
+//     ;
+//   return os;
+// }
+
+int
+strcmp1(const char *p, const char *q)
+{
+  while(*p && *p == *q)
+    p++, q++;
+  return (uchar)*p - (uchar)*q;
+}
+
+void
+c_procdump(void)
+{
+  // struct container* contained = myproc()->cont;
+  // char *c_name = cont.name;
+  static char *states[] = {
+  [UNUSED]    "unused",
+  [EMBRYO]    "embryo",
+  [SLEEPING]  "sleep ",
+  [RUNNABLE]  "runble",
+  [RUNNING]   "run   ",
+  [ZOMBIE]    "zombie"
+  };
+  int i;
+  struct proc *p;
+  char *state;
+  uint pc[10];
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->state == UNUSED)
+      continue;
+    if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
+      state = states[p->state];
+    else
+      state = "???";
+    cprintf("HERE MUTHAUCKA");
+    struct container* cont = p->cont;
+    cprintf("HERE MUTHAUCKA");
+    struct proc* pp = myproc();
+    if(myproc()->cont == NULL){
+      procdump();
+    }
+    else{
+    struct container* cont2 = pp->cont;
+    cprintf("HERE MUTHAUCKA");
+    // cprintf(cont->name);
+    if(strcmp1(cont2->name, cont->name) == 0){
+      cprintf("Container: %d %s %s", cont2->name, p->pid, state, p->name);
+      if(p->state == SLEEPING){
+        getcallerpcs((uint*)p->context->ebp+2, pc);
+        for(i=0; i<10 && pc[i] != 0; i++)
+          cprintf(" %p", pc[i]);
+      }
+    }
+    cprintf("\n");
+  }
+}
 }

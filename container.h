@@ -1,6 +1,6 @@
 
 
-struct container{
+struct container{ 
 	int max_mem, max_proc, max_disk;
 	int curr_mem, curr_proc, curr_disk;
 	char name[32];
