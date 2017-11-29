@@ -39,3 +39,4 @@
 #define SYS_is_full 38
 #define SYS_container_init 39
 #define SYS_cont_proc_set 40
+#define SYS_ps 41

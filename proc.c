@@ -8,6 +8,9 @@
 #include "spinlock.h"
 #include "container.h"
 
+#define NULL ((void*)0)
+
+
 struct {
   struct spinlock lock;
   struct proc proc[NPROC];
@@ -76,6 +79,7 @@ allocproc(void)
 {
   struct proc *p;
   char *sp;
+  // cprintf("In allocproc\n.");
 
   acquire(&ptable.lock);
 
@@ -114,6 +118,10 @@ found:
   p->context->eip = (uint)forkret;
 
   p->ticks = 0;
+  p->cont = NULL;
+  //SUCC
+  // if(p->cont == NULL)
+  //   cprintf("p container is now null.\n");
 
   return p;
 }
@@ -213,11 +221,20 @@ fork(void)
 
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));
 
+
+
   pid = np->pid;
 
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
+
+  np->cont = curproc->cont;
+  // if(curproc->cont != NULL){
+  //   cprintf("curproc container name is %s.\n", curproc->cont->name);
+  //   cprintf("new proc container name is %s.\n", np->cont->name);
+
+  // }
 
   release(&ptable.lock);
 
@@ -518,6 +535,8 @@ procdump(void)
   struct proc *p;
   char *state;
   uint pc[10];
+  // cprintf("In procdump\n.");
+
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->state == UNUSED)
@@ -526,7 +545,13 @@ procdump(void)
       state = states[p->state];
     else
       state = "???";
-    cprintf("%d %s %s", p->pid, state, p->name);
+
+    if(p->cont == NULL){
+      cprintf("%d root %s %s", p->pid, state, p->name);
+    }
+    else{
+      cprintf("%d %s %s %s", p->pid, p->cont->name, state, p->name);
+    }
     if(p->state == SLEEPING){
       getcallerpcs((uint*)p->context->ebp+2, pc);
       for(i=0; i<10 && pc[i] != 0; i++)
@@ -555,10 +580,8 @@ strcmp1(const char *p, const char *q)
 }
 
 void
-c_procdump(void)
+c_procdump(char* name)
 {
-  // struct container* contained = myproc()->cont;
-  // char *c_name = cont.name;
   static char *states[] = {
   [UNUSED]    "unused",
   [EMBRYO]    "embryo",
@@ -572,33 +595,30 @@ c_procdump(void)
   char *state;
   uint pc[10];
 
+  // cprintf("In c_procdump.\n");
+
+
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-    if(p->state == UNUSED)
+
+    // if(p->cont == NULL){
+    //   cprintf("p_cont is null in %s.\n", name);
+    // }
+    if(p->state == UNUSED || p->cont == NULL)
       continue;
     if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
       state = states[p->state];
     else
       state = "???";
-    cprintf("HERE MUTHAUCKA");
-    struct container* cont = p->cont;
-    cprintf("HERE MUTHAUCKA");
-    struct proc* pp = myproc();
-    if(myproc()->cont == NULL){
-      procdump();
-    }
-    else{
-    struct container* cont2 = pp->cont;
-    cprintf("HERE MUTHAUCKA");
-    // cprintf(cont->name);
-    if(strcmp1(cont2->name, cont->name) == 0){
-      cprintf("Container: %d %s %s", cont2->name, p->pid, state, p->name);
+
+    // cprintf("%s.\n", p->name);
+    if(strcmp1(p->cont->name, name) == 0){
+      cprintf("%d %s %s %s", p->pid, name, state, p->name);
       if(p->state == SLEEPING){
         getcallerpcs((uint*)p->context->ebp+2, pc);
         for(i=0; i<10 && pc[i] != 0; i++)
           cprintf(" %p", pc[i]);
       }
-    }
-    cprintf("\n");
+      cprintf("\n");
+    }  
   }
-}
 }

@@ -8,6 +8,9 @@
 #include "proc.h"
 #include "container.h"
 
+#define NULL ((void*)0)
+
+
 int
 sys_fork(void)
 {
@@ -76,6 +79,19 @@ sys_sleep(void)
   }
   release(&tickslock);
   return 0;
+}
+
+void sys_ps(){
+
+  struct container* cont = myproc()->cont;
+
+  if(cont == NULL){
+    procdump();
+  }
+  else{
+    // cprintf("passing in %s as name for c_procdump.\n", cont->name);
+    c_procdump(cont->name);
+  }
 }
 
 void sys_container_init(){

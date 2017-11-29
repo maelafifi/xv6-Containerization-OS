@@ -83,7 +83,7 @@ void create(char *c_args[]){
 
 }
 
-void attach_vc(char* vc, char* dir, char* file){
+void attach_vc(char* vc, char* dir, char* file, int vc_num){
 	int fd, id;
 
 	fd = open(vc, O_RDWR);
@@ -95,6 +95,7 @@ void attach_vc(char* vc, char* dir, char* file){
 	// chroot(dir);
 
 	/* fork a child and exec argv[1] */
+	cont_proc_set(vc_num);
 	id = fork();
 
 	if (id == 0){
@@ -136,17 +137,18 @@ void start(char *s_args[]){
 		printf(1, "Container already in use.\n");
 		return;
 	}
-	printf(1,"succ\n");
+	// printf(1,"succ\n");
 	set_name(dir, index);
-	cont_proc_set(index);
+	
 
 	//ASsume they give us the values for now
 	// set_max_proc(atoi(s_args[3]), index);
 	// set_max_mem(atoi(s_args[4]), index);
 	// set_max_disk(atoi(s_args[5]), index);
 
-	attach_vc(vc, dir, file);
-	printf(1, "attached.\n");
+	attach_vc(vc, dir, file, index);
+	// cont_proc_set(index);
+	// printf(1, "attached.\n");
 
 	// for (i = 0; i < arg_size; ++i){
 	// 	if(s_args[i] == '-p'){

@@ -212,18 +212,15 @@ void copy_buf(char *dst, char *src, int len)
 void
 consoleintr(int (*getc)(void))
 {
-  int c, doprocdump = 0, doconsoleswitch = 0, docontdump = 0;
+  int c, doprocdump = 0, doconsoleswitch = 0;
 
   acquire(&cons.lock);
   while((c = getc()) >= 0){
     switch(c){
     case C('P'):  // Process listing.
       // procdump() locks cons.lock indirectly; invoke later
+      // cprintf("PID of myPROC is %d\n.", myproc()->pid);
       doprocdump = 1;
-      break;
-    case C('Z'):  // Process listing.
-      // procdump() locks cons.lock indirectly; invoke later
-      docontdump = 1;
       break;
     case C('T'):  // Process listing.
       // procdump() locks cons.lock indirectly; invoke later
@@ -272,10 +269,10 @@ consoleintr(int (*getc)(void))
   }
   release(&cons.lock);
   if(doprocdump){
+    cprintf("aout to call procdump.\n");
     procdump();  // now call procdump() wo. cons.lock held
-  }
-  if(docontdump){
-    c_procdump();  // now call procdump() wo. cons.lock held
+    cprintf("after the call procdump.\n");
+
   }
   if(doconsoleswitch){
     cprintf("\nActive console now: %d\n", active);

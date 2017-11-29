@@ -45,6 +45,7 @@ int find(char*);
 int is_full(void);
 void container_init(void);
 void cont_proc_set(int vc_num);
+void ps(void);
 
 
 
