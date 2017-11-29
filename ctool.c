@@ -46,10 +46,10 @@ void name(){
 	char y[32];
 	char z[32];
 	char a[32];
-	get_name(x, 0);
-	get_name(y, 1);
-	get_name(z, 2);
-	get_name(a, 3);
+	set_name(x, 0);
+	set_name(y, 1);
+	set_name(z, 2);
+	set_name(a, 3);
 	int b = get_curr_disk(0);
 	int c = get_curr_disk(1);
 	int d = get_curr_disk(2);
@@ -67,8 +67,10 @@ void create(char *c_args[]){
 	}
 
 	int i;
-	int vc_num = is_full();
-	set_name(c_args[0], vc_num);
+	// int vc_num = is_full();
+	// set_name(c_args[0], vc_num);
+	// // printf(1, "vc_num is %d.\n", vc_num);
+	// cont_proc_set(vc_num);
 	for(i = 1; i < x; i++){
 		printf(1, "%s.\n", c_args[i]);
 		char dir[strlen(c_args[0])];
@@ -78,6 +80,7 @@ void create(char *c_args[]){
 		printf(1, "Location: %s.\n", location);
 		copy_files(location, c_args[i]);
 	}
+
 }
 
 void attach_vc(char* vc, char* dir, char* file){
@@ -105,6 +108,7 @@ void attach_vc(char* vc, char* dir, char* file){
 		printf(1, "Failure to attach VC.");
 		exit();
 	}
+	// wait();
 }
 
 void start(char *s_args[]){
@@ -121,7 +125,7 @@ void start(char *s_args[]){
 			x++;
 	}
 
-	printf(1, "Open container at %d\n", index);
+	// printf(1, "Open container at %d\n", index);
 
 	//Make a VC in use function that checks if that VC is in use by a container
 	char* vc = s_args[0];
@@ -132,8 +136,9 @@ void start(char *s_args[]){
 		printf(1, "Container already in use.\n");
 		return;
 	}
-
+	printf(1,"succ\n");
 	set_name(dir, index);
+	cont_proc_set(index);
 
 	//ASsume they give us the values for now
 	// set_max_proc(atoi(s_args[3]), index);
@@ -141,6 +146,7 @@ void start(char *s_args[]){
 	// set_max_disk(atoi(s_args[5]), index);
 
 	attach_vc(vc, dir, file);
+	printf(1, "attached.\n");
 
 	// for (i = 0; i < arg_size; ++i){
 	// 	if(s_args[i] == '-p'){
@@ -173,7 +179,7 @@ void info(char *c_name){
 
 int main(int argc, char *argv[]){
 	if(strcmp(argv[1], "init") == 0){
-		init();
+		// init();
 	}
 	else if(strcmp(argv[1], "create") == 0){
 		printf(1, "Calling create\n");

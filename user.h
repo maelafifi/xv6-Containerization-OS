@@ -27,7 +27,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getticks(void);
-void get_name(char* name, int vc_num);
+void get_name(int vc_num);
 int get_max_proc(int vc_num);
 int get_max_mem(int vc_num);
 int get_max_disk(int vc_num);
@@ -44,6 +44,8 @@ void set_curr_proc(int procs, int vc_num);
 int find(char*);
 int is_full(void);
 void container_init(void);
+void cont_proc_set(int vc_num);
+
 
 
 // ulib.c

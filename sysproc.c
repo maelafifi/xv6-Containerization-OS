@@ -95,14 +95,10 @@ int sys_find(void){
 
 void sys_get_name(void){
 
-  char* name;
-  argstr(0, &name);
-
   int vc_num;
-  argint(1, &vc_num);
+  argint(0, &vc_num);
 
-  get_name(name, vc_num);
-  return;
+  get_name(vc_num);
 }
 
 int sys_get_max_proc(void){
@@ -161,7 +157,28 @@ void sys_set_name(void){
   int vc_num;
   argint(1, &vc_num);
 
+  // myproc()->cont = get_container(vc_num);
+  // cprintf("succ");
+
   set_name(name, vc_num);
+  //cprintf("Done setting name.\n");
+}
+
+void sys_cont_proc_set(void){
+
+  int vc_num;
+  argint(0, &vc_num);
+
+  // cprintf("")
+
+  // cprintf("before getting container\n");
+
+  //So I can get the name, but I can't get the corresponding container
+  // cprintf("In sys call proc set, container name is %s.\n", get_container(vc_num)->name);
+  myproc()->cont = get_container(vc_num);
+  // cprintf("MY proc container name = %s.\n", myproc()->cont->name);
+
+  // cprintf("after getting container\n");
 }
 
 void sys_set_max_mem(void){

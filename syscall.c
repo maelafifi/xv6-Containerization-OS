@@ -121,6 +121,7 @@ extern int sys_set_curr_proc(void);
 extern int sys_find(void);
 extern int sys_is_full(void);
 extern int sys_container_init(void);
+extern int sys_cont_proc_set(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -162,6 +163,7 @@ static int (*syscalls[])(void) = {
 [SYS_find] sys_find,
 [SYS_is_full] sys_is_full,
 [SYS_container_init] sys_container_init,
+[SYS_cont_proc_set] sys_cont_proc_set,
 };
 
 void

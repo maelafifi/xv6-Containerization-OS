@@ -137,17 +137,17 @@ int
 filewrite(struct file *f, char *addr, int n)
 {
   int r;
-  int i;
-  char x[32];
-  x[0] = '\0';
+  // int i;
+  // char x[32];
+  // x[0] = '\0';
 
-  for(i = 0; i < 32; i++){
-    x[i] = f->path[i];
-    if(f->path[i] == '/'){
-      x[i] = '\0';
-      break;
-    }
-  }
+  // for(i = 0; i < 32; i++){
+  //   x[i] = f->path[i];
+  //   if(f->path[i] == '/'){
+  //     x[i] = '\0';
+  //     break;
+  //   }
+  // }
 
   if(f->writable == 0)
     return -1;
@@ -171,10 +171,10 @@ filewrite(struct file *f, char *addr, int n)
       ilock(f->ip);
       if ((r = writei(f->ip, addr + i, f->off, n1)) > 0){
         f->off += r;
-        int c_num = find(x);
-        if(c_num >= 0){
-          set_curr_disk(r, c_num);
-        }
+        // int c_num = find(x);
+        // if(c_num >= 0){
+        //   set_curr_disk(r, c_num);
+        // }
       }
       iunlock(f->ip);
       end_op();

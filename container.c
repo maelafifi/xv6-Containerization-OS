@@ -1,5 +1,7 @@
-#include "user.h"
+// #include "user.h"
 #include "container.h"
+#include "types.h"
+#include "defs.h"
 
 #define NULL ((void*)0)
 #define MAX_CONTAINERS 4
@@ -23,9 +25,16 @@ strcmp(const char *p, const char *q)
   return (uchar)*p - (uchar)*q;
 }
 
-void get_name(char* name, int vc_num){
-	struct container x = containers[vc_num];
-	strcpy(name, x.name);
+// struct con
+
+void get_name(int vc_num){
+	// struct container x = containers[vc_num];
+	// return x.name;
+
+}
+
+char* g_name(int vc_bun){
+	return containers[vc_bun].name;
 }
 
 int is_full(){
@@ -54,6 +63,13 @@ int find(char* name){
 int get_max_proc(int vc_num){
 	struct container x = containers[vc_num];
 	return x.max_proc;
+}
+
+struct container* get_container(int vc_num){
+	struct container* cont = &containers[vc_num];
+	// cprintf("vc num given is %d\n.", vc_num);
+	// cprintf("The name for this container is %s.\n", cont->name);
+	return cont;
 }
 
 int get_max_mem(int vc_num){
