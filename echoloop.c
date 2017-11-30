@@ -20,6 +20,5 @@ main(int argc, char *argv[])
     	printf(1, "%s%s", argv[i], i+1 < argc ? " " : "\n");
     sleep(ticks);
   }
-
   exit();
 }

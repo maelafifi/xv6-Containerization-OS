@@ -377,17 +377,17 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 	// chroot(dir);
 
 	/* fork a child and exec argv[1] */
-	cont_proc_set(vc_num);
- 364:	8b 45 14             	mov    0x14(%ebp),%eax
- 367:	89 04 24             	mov    %eax,(%esp)
- 36a:	e8 c5 05 00 00       	call   934 <cont_proc_set>
 	id = fork();
- 36f:	e8 88 04 00 00       	call   7fc <fork>
- 374:	89 45 f0             	mov    %eax,-0x10(%ebp)
+ 364:	e8 93 04 00 00       	call   7fc <fork>
+ 369:	89 45 f0             	mov    %eax,-0x10(%ebp)
 
 	if (id == 0){
- 377:	83 7d f0 00          	cmpl   $0x0,-0x10(%ebp)
- 37b:	75 70                	jne    3ed <attach_vc+0xb0>
+ 36c:	83 7d f0 00          	cmpl   $0x0,-0x10(%ebp)
+ 370:	75 7b                	jne    3ed <attach_vc+0xb0>
+		cont_proc_set(vc_num);
+ 372:	8b 45 14             	mov    0x14(%ebp),%eax
+ 375:	89 04 24             	mov    %eax,(%esp)
+ 378:	e8 b7 05 00 00       	call   934 <cont_proc_set>
 		close(0);
  37d:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
  384:	e8 a3 04 00 00       	call   82c <close>
@@ -662,7 +662,6 @@ int main(int argc, char *argv[]){
  59f:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
  5a6:	e8 7e 04 00 00       	call   a29 <printf>
 
-	//Fucking main DOESNT RETURN 0 IT EXITS or else you get a trap error and then spend an hour seeing where you messed up. 
 	exit();
  5ab:	e8 54 02 00 00       	call   804 <exit>
 

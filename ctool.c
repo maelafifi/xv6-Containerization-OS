@@ -93,10 +93,10 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 	// chroot(dir);
 
 	/* fork a child and exec argv[1] */
-	cont_proc_set(vc_num);
 	id = fork();
 
 	if (id == 0){
+		cont_proc_set(vc_num);
 		close(0);
 		close(1);
 		close(2);
@@ -208,6 +208,5 @@ int main(int argc, char *argv[]){
 	}
 	printf(1, "Done with ctool\n");
 
-	//Fucking main DOESNT RETURN 0 IT EXITS or else you get a trap error and then spend an hour seeing where you messed up. 
 	exit();
 }

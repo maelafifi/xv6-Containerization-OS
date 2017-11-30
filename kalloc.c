@@ -13,6 +13,7 @@
 
 #define NULL ((void*)0)
 
+
 void freerange(void *vstart, void *vend);
 extern char end[]; // first address after kernel loaded from ELF file
                    // defined by the kernel linker script in kernel.ld
@@ -72,15 +73,18 @@ kfree(char *v)
   // Fill with junk to catch dangling refs.
   memset(v, 1, PGSIZE);
 
-  if(ticks > 1){
+  if(kmem.use_lock){
+    acquire(&kmem.lock);
+    if(ticks > 1){
     int x = find(myproc()->cont->name);
     if(x >= 0){
       reduce_curr_mem(1, x);
     }
+    struct proc *p = initp();
+    cprintf(p->name);
+    cprintf("goodbye \n");
   }
-
-  if(kmem.use_lock)
-    acquire(&kmem.lock);
+  }
   r = (struct run*)v;
   r->next = kmem.freelist;
   kmem.freelist = r;
@@ -96,20 +100,25 @@ kalloc(void)
 {
   struct run *r;
 
-  
-  if(ticks > 1){
-    int x = find(myproc()->cont->name);
-    if(x >= 0){
-      set_curr_mem(1, x);
-    }
-  }
-
-  if(kmem.use_lock)
+  if(kmem.use_lock){
     acquire(&kmem.lock);
+  }
   r = kmem.freelist;
   if(r)
     kmem.freelist = r->next;
   if(kmem.use_lock)
     release(&kmem.lock);
+  if((char*)r != 0){
+    if(ticks > 1){
+      int x = find(myproc()->cont->name);
+      if(x >= 0){
+        set_curr_mem(1, x);
+      }
+      struct proc *p = initp();
+      cprintf(p->name);
+      cprintf("hello \n");
+
+    }
+  }
   return (char*)r;
 }
