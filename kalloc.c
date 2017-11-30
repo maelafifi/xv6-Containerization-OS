@@ -75,15 +75,15 @@ kfree(char *v)
 
   if(kmem.use_lock){
     acquire(&kmem.lock);
-    if(ticks > 1){
-    int x = find(myproc()->cont->name);
-    if(x >= 0){
-      reduce_curr_mem(1, x);
-    }
-    struct proc *p = initp();
-    cprintf(p->name);
-    cprintf("goodbye \n");
-  }
+    // if(ticks > 1){
+    // int x = find(myproc()->cont->name);
+    // if(x >= 0){
+    //   reduce_curr_mem(1, x);
+    // }
+    // struct proc *p = initp();
+    // cprintf(p->name);
+    // cprintf("goodbye \n");
+  // }
   }
   r = (struct run*)v;
   r->next = kmem.freelist;
@@ -108,15 +108,15 @@ kalloc(void)
     kmem.freelist = r->next;
   if(kmem.use_lock)
     release(&kmem.lock);
-  if((char*)r != 0){
+  if(r){
     if(ticks > 1){
       int x = find(myproc()->cont->name);
       if(x >= 0){
         set_curr_mem(1, x);
       }
-      struct proc *p = initp();
-      cprintf(p->name);
-      cprintf("hello \n");
+      // struct proc *p = initp();
+      // cprintf(p->name);
+      // cprintf("hello \n");
 
     }
   }

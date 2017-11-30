@@ -41,3 +41,5 @@
 #define SYS_cont_proc_set 40
 #define SYS_ps 41
 #define SYS_reduce_curr_mem 42
+#define SYS_set_root_inode 43
+#define SYS_cstop 44

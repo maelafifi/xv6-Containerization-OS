@@ -33,6 +33,12 @@ strcmp(const char *p, const char *q)
 
 // struct con
 
+void set_root_inode(char* name){
+
+	containers[find(name)].root = namei(name);
+
+}
+
 void get_name(int vc_num, char* name){
 
 	char* name2 = containers[vc_num].name;
@@ -102,6 +108,7 @@ int get_curr_proc(int vc_num){
 
 int get_curr_mem(int vc_num){
 	struct container x = containers[vc_num];
+	cprintf("curr mem is called. Val : %d.\n", x.curr_mem);
 	return x.curr_mem; 
 }
 
@@ -127,11 +134,13 @@ void set_max_proc(int procs, int vc_num){
 }
 
 void set_curr_mem(int mem, int vc_num){
-	containers[vc_num].curr_mem = containers[vc_num].curr_mem + 1;	
+	containers[vc_num].curr_mem = containers[vc_num].curr_mem + 1;
+	// cprintf("Memory was %d, but now its %d pages.\n",containers[vc_num].curr_mem-1, containers[vc_num].curr_mem);	
 }
 
 void reduce_curr_mem(int mem, int vc_num){
-	containers[vc_num].curr_mem = containers[vc_num].curr_mem - 1;	
+	containers[vc_num].curr_mem = containers[vc_num].curr_mem - 1;
+	// cprintf("Memory was %d, but now its %d pages.\n",containers[vc_num].curr_mem, containers[vc_num].curr_mem-1);	
 }
 
 void set_curr_disk(int disk, int vc_num){

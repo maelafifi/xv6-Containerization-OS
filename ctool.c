@@ -55,7 +55,6 @@ void name(){
 	printf(1, "0: %s - %d, 1: %s - %d, 2: %s - %d, 3: %s - %d\n", x, b, y, c, z, d, a, e);
 }
 
-
 void create(char *c_args[]){
 	mkdir(c_args[0]);
 	
@@ -136,7 +135,7 @@ void start(char *s_args[]){
 		return;
 	}
 	// printf(1,"succ\n");
-	set_name(dir, index);
+	
 	
 
 	//ASsume they give us the values for now
@@ -144,6 +143,8 @@ void start(char *s_args[]){
 	// set_max_mem(atoi(s_args[4]), index);
 	// set_max_disk(atoi(s_args[5]), index);
 
+	set_name(dir, index);
+	set_root_inode(dir);
 	attach_vc(vc, dir, file, index);
 	// cont_proc_set(index);
 	// printf(1, "attached.\n");
@@ -169,8 +170,9 @@ void resume(char *c_name){
 
 }
 
-void stop(char *c_name){
-
+void stop(char *c_name[]){
+	printf(1, "trying to stop container %s\n", c_name[0]);
+	cstop(c_name[0]);
 }
 
 void info(char *c_name){
@@ -197,9 +199,9 @@ int main(int argc, char *argv[]){
 	// else if(argv[1] == 'resume'){
 	// 	resume(&argv[2]);
 	// }
-	// else if(argv[1] == 'stop'){
-	// 	stop(&argv[2]);
-	// }
+	else if(strcmp(argv[1],"stop") == 0){
+		stop(&argv[2]);
+	}
 	// else if(argv[1] == 'info'){
 	// 	info(&argv[2]);
 	// }

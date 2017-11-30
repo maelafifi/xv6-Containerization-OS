@@ -39,7 +39,7 @@ forktest(void)
   int n, pid;
 
   printf(1, "fork test\n");
-  2f:	c7 44 24 04 b0 04 00 	movl   $0x4b0,0x4(%esp)
+  2f:	c7 44 24 04 c0 04 00 	movl   $0x4c0,0x4(%esp)
   36:	00 
   37:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   3e:	e8 bd ff ff ff       	call   0 <printf>
@@ -80,7 +80,7 @@ forktest(void)
     printf(1, "fork claimed to work N times!\n", N);
   7c:	c7 44 24 08 e8 03 00 	movl   $0x3e8,0x8(%esp)
   83:	00 
-  84:	c7 44 24 04 bc 04 00 	movl   $0x4bc,0x4(%esp)
+  84:	c7 44 24 04 cc 04 00 	movl   $0x4cc,0x4(%esp)
   8b:	00 
   8c:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   93:	e8 68 ff ff ff       	call   0 <printf>
@@ -95,7 +95,7 @@ forktest(void)
   a4:	85 c0                	test   %eax,%eax
   a6:	79 19                	jns    c1 <forktest+0x98>
       printf(1, "wait stopped early\n");
-  a8:	c7 44 24 04 db 04 00 	movl   $0x4db,0x4(%esp)
+  a8:	c7 44 24 04 eb 04 00 	movl   $0x4eb,0x4(%esp)
   af:	00 
   b0:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   b7:	e8 44 ff ff ff       	call   0 <printf>
@@ -120,7 +120,7 @@ forktest(void)
   cf:	83 f8 ff             	cmp    $0xffffffff,%eax
   d2:	74 19                	je     ed <forktest+0xc4>
     printf(1, "wait got too many\n");
-  d4:	c7 44 24 04 ef 04 00 	movl   $0x4ef,0x4(%esp)
+  d4:	c7 44 24 04 ff 04 00 	movl   $0x4ff,0x4(%esp)
   db:	00 
   dc:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   e3:	e8 18 ff ff ff       	call   0 <printf>
@@ -129,7 +129,7 @@ forktest(void)
   }
 
   printf(1, "fork test OK\n");
-  ed:	c7 44 24 04 02 05 00 	movl   $0x502,0x4(%esp)
+  ed:	c7 44 24 04 12 05 00 	movl   $0x512,0x4(%esp)
   f4:	00 
   f5:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   fc:	e8 ff fe ff ff       	call   0 <printf>
@@ -813,3 +813,14 @@ SYSCALL(reduce_curr_mem)
  4a8:	b8 2a 00 00 00       	mov    $0x2a,%eax
  4ad:	cd 40                	int    $0x40
  4af:	c3                   	ret    
+
+000004b0 <set_root_inode>:
+SYSCALL(set_root_inode)
+ 4b0:	b8 2b 00 00 00       	mov    $0x2b,%eax
+ 4b5:	cd 40                	int    $0x40
+ 4b7:	c3                   	ret    
+
+000004b8 <cstop>:
+ 4b8:	b8 2c 00 00 00       	mov    $0x2c,%eax
+ 4bd:	cd 40                	int    $0x40
+ 4bf:	c3                   	ret    

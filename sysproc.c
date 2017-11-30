@@ -81,7 +81,40 @@ sys_sleep(void)
   return 0;
 }
 
-void sys_ps(){
+void sys_cstop(){
+
+  char* name;
+  argstr(0, &name);
+
+  if(myproc()->cont != NULL){
+    struct container* cont = myproc()->cont;
+    if(strlen(name) == strlen(cont->name) && strncmp(name, cont->name, strlen(name)) == 0){
+      cstop_container_helper(cont);
+      //stop the processes
+    }
+    else{
+      cprintf("You are not authorized to do this.\n");
+    }
+  }
+  else{
+    cstop_helper(name);
+  }
+
+  //kill the processes with name as the id
+
+}
+
+void sys_set_root_inode(void){
+
+  char* name;
+  argstr(0,&name);
+
+  set_root_inode(name);
+  cprintf("success\n");
+
+}
+
+void sys_ps(void){
 
   struct container* cont = myproc()->cont;
 

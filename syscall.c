@@ -124,6 +124,8 @@ extern int sys_container_init(void);
 extern int sys_cont_proc_set(void);
 extern int sys_ps(void);
 extern int sys_reduce_curr_mem(void);
+extern int sys_set_root_inode(void);
+extern int sys_cstop(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -168,6 +170,8 @@ static int (*syscalls[])(void) = {
 [SYS_cont_proc_set] sys_cont_proc_set,
 [SYS_ps] sys_ps,
 [SYS_reduce_curr_mem] sys_reduce_curr_mem,
+[SYS_set_root_inode] sys_set_root_inode,
+[SYS_cstop] sys_cstop,
 };
 
 void

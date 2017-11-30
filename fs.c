@@ -632,6 +632,7 @@ namex(char *path, int nameiparent, char *name)
   else
     ip = idup(myproc()->cwd);
 
+
   while((path = skipelem(path, name)) != 0){
     ilock(ip);
     if(ip->type != T_DIR){
@@ -654,6 +655,23 @@ namex(char *path, int nameiparent, char *name)
     iput(ip);
     return 0;
   }
+
+  // if(myproc()->cont != NULL){
+  //   struct inode* root_node = myproc()->cont->root;
+  //   if(root->inum == ip->inum){
+  //     return ip;
+  //   }
+  //   struct inode* temp = ip; 
+  //   while(temp){
+  //     if(root->inum == temp->inum){
+  //       return ip;
+  //     }
+  //     else{
+  //       temp = 
+  //     }
+  //   }
+  // }
+
   return ip;
 }
 

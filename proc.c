@@ -293,6 +293,14 @@ exit(void)
   panic("zombie exit");
 }
 
+int
+strcmp1(const char *p, const char *q)
+{
+  while(*p && *p == *q)
+    p++, q++;
+  return (uchar)*p - (uchar)*q;
+}
+
 // Wait for a child process to exit and return its pid.
 // Return -1 if this process has no children.
 int
@@ -567,6 +575,38 @@ procdump(void)
   }
 }
 
+void cstop_container_helper(struct container* cont){
+
+  struct proc *p;
+  // cprintf("In procdump\n.");
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+
+    if(strcmp1(p->cont->name, cont->name) == 0){
+      kill(p->pid);
+    }
+  }
+}
+
+void cstop_helper(char* name){
+
+  struct proc *p;
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+
+    if(p->cont == NULL){
+      continue;
+    }
+
+    if(strcmp1(p->cont->name, name) == 0){
+      cprintf("killing process %s with pid %d\n", p->cont->name, p->pid);
+      kill(p->pid);
+    }
+  }
+
+
+
+}
+
 
 // char* strcpy(char *s, char *t){
 //   char *os;
@@ -577,13 +617,7 @@ procdump(void)
 //   return os;
 // }
 
-int
-strcmp1(const char *p, const char *q)
-{
-  while(*p && *p == *q)
-    p++, q++;
-  return (uchar)*p - (uchar)*q;
-}
+
 
 void
 c_procdump(char* name)
