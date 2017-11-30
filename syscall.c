@@ -123,6 +123,7 @@ extern int sys_is_full(void);
 extern int sys_container_init(void);
 extern int sys_cont_proc_set(void);
 extern int sys_ps(void);
+extern int sys_reduce_curr_mem(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -166,6 +167,7 @@ static int (*syscalls[])(void) = {
 [SYS_container_init] sys_container_init,
 [SYS_cont_proc_set] sys_cont_proc_set,
 [SYS_ps] sys_ps,
+[SYS_reduce_curr_mem] sys_reduce_curr_mem,
 };
 
 void

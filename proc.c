@@ -119,6 +119,12 @@ found:
 
   p->ticks = 0;
   p->cont = NULL;
+  // if(initproc != NULL){
+  //   int x = find(myproc()->cont->name);
+  //   if(x >= 0){
+  //     set_curr_mem(1, x);
+  //   }
+  // }
   //SUCC
   // if(p->cont == NULL)
   //   cprintf("p container is now null.\n");
@@ -621,4 +627,10 @@ c_procdump(char* name)
       cprintf("\n");
     }  
   }
+}
+
+
+
+struct proc* initp(void){
+  return initproc;
 }

@@ -2,6 +2,7 @@
 #include "stat.h"
 #include "user.h"
 #include "fcntl.h"
+#include "container.h"
 
 char* strcat(char* s1, const char* s2)
 {
@@ -42,18 +43,15 @@ void init(){
 }
 
 void name(){
-	char x[32];
-	char y[32];
-	char z[32];
-	char a[32];
-	set_name(x, 0);
-	set_name(y, 1);
-	set_name(z, 2);
-	set_name(a, 3);
-	int b = get_curr_disk(0);
-	int c = get_curr_disk(1);
-	int d = get_curr_disk(2);
-	int e = get_curr_disk(3);
+	char x[16], y[16], z[16], a[16];
+	get_name(0, x);
+	get_name(1, y);
+	get_name(2, z);
+	get_name(3, a);
+	int b = get_curr_mem(0);
+	int c = get_curr_mem(1);
+	int d = get_curr_mem(2);
+	int e = get_curr_mem(3);
 	printf(1, "0: %s - %d, 1: %s - %d, 2: %s - %d, 3: %s - %d\n", x, b, y, c, z, d, a, e);
 }
 

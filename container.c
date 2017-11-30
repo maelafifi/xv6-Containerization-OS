@@ -8,6 +8,12 @@
 
 struct container containers[MAX_CONTAINERS];
 
+void*
+memcpy2(void *dst, const void *src, uint n)
+{
+  return memmove(dst, src, n);
+}
+
 char* strcpy(char *s, char *t){
   char *os;
 
@@ -27,10 +33,15 @@ strcmp(const char *p, const char *q)
 
 // struct con
 
-void get_name(int vc_num){
-	// struct container x = containers[vc_num];
-	// return x.name;
+void get_name(int vc_num, char* name){
 
+	char* name2 = containers[vc_num].name;
+	int i = 0;
+	while(name2[i])
+	{
+		i++;
+	}
+	memcpy2(name, name2, i);
 }
 
 char* g_name(int vc_bun){
@@ -48,12 +59,14 @@ int is_full(){
 }
 
 int find(char* name){
+	//cprintf("in here");
 	int i;
 	for(i = 0; i < MAX_CONTAINERS; i++){
-		if(containers[i].name == NULL){
+		if(strcmp(name, "") == 0){
 			continue;
 		}
 		if(strcmp(name, containers[i].name) == 0){
+			//cprintf("in hereI");
 			return i;
 		}
 	}
@@ -114,7 +127,11 @@ void set_max_proc(int procs, int vc_num){
 }
 
 void set_curr_mem(int mem, int vc_num){
-	containers[vc_num].curr_mem = mem;	
+	containers[vc_num].curr_mem = containers[vc_num].curr_mem + 1;	
+}
+
+void reduce_curr_mem(int mem, int vc_num){
+	containers[vc_num].curr_mem = containers[vc_num].curr_mem - 1;	
 }
 
 void set_curr_disk(int disk, int vc_num){

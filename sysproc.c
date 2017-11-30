@@ -112,9 +112,11 @@ int sys_find(void){
 void sys_get_name(void){
 
   int vc_num;
+  char* name;
   argint(0, &vc_num);
+  argstr(1, &name);
 
-  get_name(vc_num);
+  get_name(vc_num, name);
 }
 
 int sys_get_max_proc(void){
@@ -228,6 +230,16 @@ void sys_set_max_proc(void){
 }
 
 void sys_set_curr_mem(void){
+  int mem;
+  argint(0, &mem);
+
+  int vc_num;
+  argint(1, &vc_num);
+
+  set_curr_mem(mem, vc_num);
+}
+
+void sys_reduce_curr_mem(void){
   int mem;
   argint(0, &mem);
 
