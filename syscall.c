@@ -127,6 +127,7 @@ extern int sys_reduce_curr_mem(void);
 extern int sys_set_root_inode(void);
 extern int sys_cstop(void);
 extern int sys_df(void);
+extern int sys_max_containers(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -174,6 +175,7 @@ static int (*syscalls[])(void) = {
 [SYS_set_root_inode] sys_set_root_inode,
 [SYS_cstop] sys_cstop,
 [SYS_df] sys_df,
+[SYS_max_containers] sys_max_containers,
 };
 
 void

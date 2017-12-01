@@ -151,6 +151,10 @@ void set_curr_proc(int procs, int vc_num){
 	containers[vc_num].curr_proc = procs;	
 }
 
+int max_containers(){
+	return MAX_CONTAINERS;
+}
+
 void container_init(){
 
 	int i;

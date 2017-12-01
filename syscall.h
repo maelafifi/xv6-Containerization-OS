@@ -44,3 +44,4 @@
 #define SYS_set_root_inode 43
 #define SYS_cstop 44
 #define SYS_df 45
+#define SYS_max_containers 46

@@ -316,20 +316,30 @@ sys_uptime(void)
 }
 
 int
-sys_getticks(void)
-{
+sys_getticks(void){
   return myproc()->ticks;
+}
+
+int sys_max_containers(void){
+  return max_containers();
 }
 
 
 void sys_df(void){
   struct container* cont = myproc()->cont;
-  int x = find(cont->name);
+  int used = 0;
   if(cont == NULL){
-    //
+    int max = max_containers();
+    int i;
+    for(i = 0; i < max; i++){
+      used = used + (int)(get_curr_disk(i) / 1024);
+    }
+    cprintf("Total Disk Used: ~%d / Total Disk Available: TBD\n", used);
   }
   else{
-    cprintf("Disk Used: %d / Disk Available: %d\n", get_curr_disk(x), get_max_disk(x));
+    int x = find(cont->name);
+    int used = (int)(get_curr_disk(x) / 1024);
+    cprintf("Disk Used: ~%d / Disk Available: %d\n", used, get_max_disk(x));
   }
 }
 
