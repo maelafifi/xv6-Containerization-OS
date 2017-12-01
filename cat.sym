@@ -1,7 +1,7 @@
 00000000 .text
-0000098b .rodata
-000009cc .eh_frame
-00000c30 .data
+00000993 .rodata
+000009d4 .eh_frame
+00000c38 .data
 00000c60 .bss
 00000000 .comment
 00000000 .debug_aranges
@@ -14,16 +14,16 @@
 00000000 ulib.c
 0000013c stosb
 00000000 printf.c
-000004e8 putc
-00000510 printint
-00000c30 digits.1086
+000004f0 putc
+00000518 printint
+00000c38 digits.1088
 00000000 umalloc.c
 00000c60 base
 00000c68 freep
-00000855 morecore
+0000085d morecore
 00000161 strcpy
 00000490 set_curr_mem
-000005c5 printf
+000005cd printf
 00000498 set_curr_disk
 00000468 get_curr_disk
 00000478 set_max_mem
@@ -40,7 +40,7 @@
 000004c0 cont_proc_set
 00000440 get_max_proc
 000004d0 reduce_curr_mem
-000008ad malloc
+000008b5 malloc
 00000420 sleep
 00000458 get_curr_proc
 00000460 get_curr_mem
@@ -53,6 +53,7 @@
 00000430 getticks
 00000400 chdir
 000003c8 exec
+000004e8 df
 00000398 wait
 000003a8 read
 000003e0 unlink
@@ -63,7 +64,7 @@
 00000418 sbrk
 00000428 uptime
 000004a0 set_curr_proc
-00000c44 __bss_start
+00000c4c __bss_start
 000001ec memset
 00000086 main
 00000470 set_name
@@ -72,7 +73,7 @@
 00000c80 buf
 000002b1 stat
 00000450 get_max_disk
-00000c44 _edata
+00000c4c _edata
 00000e80 _end
 000003f0 link
 00000390 exit
@@ -82,4 +83,4 @@
 00000210 strchr
 000003f8 mkdir
 000003b8 close
-00000774 free
+0000077c free

@@ -43,3 +43,4 @@
 #define SYS_reduce_curr_mem 42
 #define SYS_set_root_inode 43
 #define SYS_cstop 44
+#define SYS_df 45

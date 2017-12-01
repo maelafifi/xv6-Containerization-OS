@@ -49,6 +49,7 @@ void cont_proc_set(int vc_num);
 void ps(void);
 void set_root_inode(char* name);
 void cstop(char* name);
+void df(void);
 
 
 // ulib.c

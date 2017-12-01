@@ -320,3 +320,16 @@ sys_getticks(void)
 {
   return myproc()->ticks;
 }
+
+
+void sys_df(void){
+  struct container* cont = myproc()->cont;
+  int x = find(cont->name);
+  if(cont == NULL){
+    //
+  }
+  else{
+    cprintf("Disk Used: %d / Disk Available: %d\n", get_curr_disk(x), get_max_disk(x));
+  }
+}
+

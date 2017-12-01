@@ -126,6 +126,7 @@ extern int sys_ps(void);
 extern int sys_reduce_curr_mem(void);
 extern int sys_set_root_inode(void);
 extern int sys_cstop(void);
+extern int sys_df(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -172,6 +173,7 @@ static int (*syscalls[])(void) = {
 [SYS_reduce_curr_mem] sys_reduce_curr_mem,
 [SYS_set_root_inode] sys_set_root_inode,
 [SYS_cstop] sys_cstop,
+[SYS_df] sys_df,
 };
 
 void

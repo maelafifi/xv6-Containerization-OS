@@ -659,6 +659,10 @@ c_procdump(char* name)
   }
 }
 
+void
+cont_disk(void){
+  
+}
 
 
 struct proc* initp(void){
