@@ -604,6 +604,7 @@ void cstop_helper(char* name){
       kill(p->pid);
     }
   }
+  container_reset(find(name));
 }
 
 // char* strcpy(char *s, char *t){

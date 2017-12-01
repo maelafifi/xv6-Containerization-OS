@@ -156,9 +156,7 @@ int max_containers(){
 }
 
 void container_init(){
-
 	int i;
-
 	for(i = 0; i < MAX_CONTAINERS; i++){
 		strcpy(containers[i].name, "");
 		containers[i].max_proc = 4;
@@ -169,3 +167,16 @@ void container_init(){
 		containers[i].curr_mem = 0;
 	}
 }
+
+void container_reset(int vc_num){
+	strcpy(containers[vc_num].name, "");
+	containers[vc_num].max_proc = 4;
+	containers[vc_num].max_disk = 100;
+	containers[vc_num].max_mem = 100;
+	containers[vc_num].curr_proc = 1;
+	containers[vc_num].curr_disk = 0;
+	containers[vc_num].curr_mem = 0;
+}
+
+
+

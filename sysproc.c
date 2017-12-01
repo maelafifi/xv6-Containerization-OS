@@ -302,6 +302,11 @@ void sys_set_curr_proc(void){
   set_curr_proc(proc, vc_num);
 }
 
+void sys_container_reset(void){
+  int vc_num;
+  argint(1, &vc_num);
+  container_reset(vc_num);
+}
 // return how many clock tick interrupts have occurred
 // since start.
 int

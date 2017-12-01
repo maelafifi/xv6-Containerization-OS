@@ -51,6 +51,7 @@ void set_root_inode(char* name);
 void cstop(char* name);
 void df(void);
 int mac_containers(void);
+void container_reset(int vc_num);
 
 
 // ulib.c

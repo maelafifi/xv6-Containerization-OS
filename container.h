@@ -33,3 +33,4 @@ struct container* get_container(int vc_num);
 char* g_name(int vc_num);
 void set_root_inode(char* name);
 int max_containers();
+void container_reset(int vc_num);

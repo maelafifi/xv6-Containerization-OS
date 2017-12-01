@@ -45,3 +45,4 @@
 #define SYS_cstop 44
 #define SYS_df 45
 #define SYS_max_containers 46
+#define SYS_container_reset 47
