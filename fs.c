@@ -20,6 +20,7 @@
 #include "fs.h"
 #include "buf.h"
 #include "file.h"
+#include "container.h"
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 static void itrunc(struct inode*);
@@ -484,17 +485,26 @@ writei(struct inode *ip, char *src, uint off, uint n)
 {
   uint tot, m;
   struct buf *bp;
+  struct container* cont = myproc()->cont;
+  int x = find(cont->name); // should be in range of 0-MAX_CONTAINERS to be utilized
 
   if(ip->type == T_DEV){
-    if(ip->major < 0 || ip->major >= NDEV || !devsw[ip->major].write)
+    if(ip->major < 0 || ip->major >= NDEV || !devsw[ip->major].write){
+      cprintf("hello1");
       return -1;
+    }
+    //cprintf("hello2");
     return devsw[ip->major].write(ip, src, n);
   }
 
-  if(off > ip->size || off + n < off)
+
+  if(off > ip->size || off + n < off){
     return -1;
-  if(off + n > MAXFILE*BSIZE)
+  }
+  if(off + n > MAXFILE*BSIZE){
+    cprintf("hello4");
     return -1;
+  }
 
   for(tot=0; tot<n; tot+=m, off+=m, src+=m){
     bp = bread(ip->dev, bmap(ip, off/BSIZE));
@@ -504,6 +514,12 @@ writei(struct inode *ip, char *src, uint off, uint n)
     brelse(bp);
   }
 
+  if(x >= 0){
+    cprintf("%d\n", tot);
+    if(tot == 1){
+      set_curr_disk(1, x);
+    }
+  }
   if(n > 0 && off > ip->size){
     ip->size = off;
     iupdate(ip);
@@ -632,7 +648,6 @@ namex(char *path, int nameiparent, char *name)
   else
     ip = idup(myproc()->cwd);
 
-
   while((path = skipelem(path, name)) != 0){
     ilock(ip);
     if(ip->type != T_DIR){
@@ -671,7 +686,6 @@ namex(char *path, int nameiparent, char *name)
   //     }
   //   }
   // }
-
   return ip;
 }
 

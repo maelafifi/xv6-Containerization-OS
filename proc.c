@@ -293,6 +293,7 @@ exit(void)
   panic("zombie exit");
 }
 
+
 int
 strcmp1(const char *p, const char *q)
 {
@@ -575,6 +576,7 @@ procdump(void)
   }
 }
 
+
 void cstop_container_helper(struct container* cont){
 
   struct proc *p;
@@ -602,11 +604,7 @@ void cstop_helper(char* name){
       kill(p->pid);
     }
   }
-
-
-
 }
-
 
 // char* strcpy(char *s, char *t){
 //   char *os;
@@ -616,8 +614,6 @@ void cstop_helper(char* name){
 //     ;
 //   return os;
 // }
-
-
 
 void
 c_procdump(char* name)
@@ -667,4 +663,8 @@ c_procdump(char* name)
 
 struct proc* initp(void){
   return initproc;
+}
+
+struct proc* c_proc(void){
+  return myproc();
 }

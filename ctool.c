@@ -3,6 +3,7 @@
 #include "user.h"
 #include "fcntl.h"
 #include "container.h"
+#include "fs.h"
 
 char* strcat(char* s1, const char* s2)
 {
@@ -52,7 +53,91 @@ void name(){
 	int c = get_curr_mem(1);
 	int d = get_curr_mem(2);
 	int e = get_curr_mem(3);
-	printf(1, "0: %s - %d, 1: %s - %d, 2: %s - %d, 3: %s - %d\n", x, b, y, c, z, d, a, e);
+	int s = get_curr_disk(0);
+	printf(1, "0: %s - %d SIZE: %d, 1: %s - %d, 2: %s - %d, 3: %s - %d\n", x, b, s, y, c, z, d, a, e);
+}
+
+char*
+fmtname(char *path)
+{
+  static char buf[DIRSIZ+1];
+  char *p;
+
+  // Find first character after last slash.
+  for(p=path+strlen(path); p >= path && *p != '/'; p--)
+    ;
+  p++;
+
+  // Return blank-padded name.
+  if(strlen(p) >= DIRSIZ)
+    return p;
+  memmove(buf, p, strlen(p));
+  memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));
+  return buf;
+}
+
+void
+add_file_size(char *path, char *c_name)
+{
+  char buf[512], *p;
+  int fd;
+  struct dirent de;
+  struct stat st;
+  int z;
+  printf(1, "PATH: %s  C_NAME: %s",path, c_name);
+
+  if((fd = open(path, 0)) < 0){
+    printf(2, "ls: cannot open %s\n", path);
+    return;
+  }
+
+  if(fstat(fd, &st) < 0){
+    printf(2, "ls: cannot stat %s\n", path);
+    close(fd);
+    return;
+  }
+
+  switch(st.type){
+  case T_FILE:
+  	printf(1, "HERE \n");
+  	z = find(c_name);
+  	printf(1, "Z = %d\n", z);
+  	if(z >= 0){
+	  	set_curr_disk(st.size, z);
+	  	printf(1, "adding %d \n", st.size);
+	}
+    break;
+
+  case T_DIR:
+  	printf(1, "HERE2 \n");
+    if(strlen(path) + 1 + DIRSIZ + 1 > sizeof buf){
+      printf(1, "ls: path too long\n");
+      break;
+    }
+    printf(1, "HERE3 \n");
+    strcpy(buf, path);
+    p = buf+strlen(buf);
+    *p++ = '/';
+    while(read(fd, &de, sizeof(de)) == sizeof(de)){
+      if(de.inum == 0)
+        continue;
+      memmove(p, de.name, DIRSIZ);
+      p[DIRSIZ] = 0;
+      if(stat(buf, &st) < 0){
+        printf(1, "ls: cannot stat %s\n", buf);
+        continue;
+      }
+      printf(1, "HERE4 \n");
+      int z = find(c_name);
+      printf(1, "Z = %d\n", z);
+  	  if(z >= 0){
+	  	set_curr_disk(st.size, z);
+	  	printf(1, "adding %d \n", st.size);
+	  }
+    }
+    break;
+  }
+  close(fd);
 }
 
 void create(char *c_args[]){
@@ -87,15 +172,20 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 	//printf(1, "fd = %d\n", fd);
 
 	//TODO Check tosee file in file system
-
+	char c_name[16];
+	strcpy(c_name, dir);
 	chdir(dir);
 	// chroot(dir);
 
 	/* fork a child and exec argv[1] */
+	// cont_proc_set(vc_num);
 	id = fork();
 
 	if (id == 0){
 		cont_proc_set(vc_num);
+		dir = strcat("/" , dir);
+		//dir = strcat(dir, "/");
+		add_file_size(dir, c_name);
 		close(0);
 		close(1);
 		close(2);

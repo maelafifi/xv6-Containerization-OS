@@ -15,6 +15,7 @@
 #include "sleeplock.h"
 #include "file.h"
 #include "fcntl.h"
+#include "container.h"
 
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
@@ -216,8 +217,15 @@ sys_unlink(void)
   }
 
   memset(&de, 0, sizeof(de));
-  if(writei(dp, (char*)&de, off, sizeof(de)) != sizeof(de))
+  int z = writei(dp, (char*)&de, off, sizeof(de));
+  if(z != sizeof(de))
     panic("unlink: writei");
+
+  char *c_name = myproc()->cont->name;
+  int x = find(c_name);
+  int set = z/2;
+  // cprintf("DECREMENTING %d \n", set);
+  set_curr_disk(-set, x);
   if(ip->type == T_DIR){
     dp->nlink--;
     iupdate(dp);
