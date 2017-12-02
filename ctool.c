@@ -185,7 +185,7 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 		cont_proc_set(vc_num);
 		dir = strcat("/" , dir);
 		//dir = strcat(dir, "/");
-		add_file_size(dir, c_name);
+		// add_file_size(dir, c_name);
 		close(0);
 		close(1);
 		close(2);

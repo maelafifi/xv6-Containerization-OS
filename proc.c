@@ -587,6 +587,8 @@ void cstop_container_helper(struct container* cont){
       kill(p->pid);
     }
   }
+
+  container_reset(find(cont->name));
 }
 
 void cstop_helper(char* name){

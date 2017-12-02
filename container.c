@@ -162,7 +162,7 @@ void container_init(){
 		containers[i].max_proc = 4;
 		containers[i].max_disk = 100;
 		containers[i].max_mem = 100;
-		containers[i].curr_proc = 1;
+		containers[i].curr_proc = 0;
 		containers[i].curr_disk = 0;
 		containers[i].curr_mem = 0;
 	}
@@ -173,7 +173,7 @@ void container_reset(int vc_num){
 	containers[vc_num].max_proc = 4;
 	containers[vc_num].max_disk = 100;
 	containers[vc_num].max_mem = 100;
-	containers[vc_num].curr_proc = 1;
+	containers[vc_num].curr_proc = 0;
 	containers[vc_num].curr_disk = 0;
 	containers[vc_num].curr_mem = 0;
 }

@@ -22,6 +22,8 @@
 #include "file.h"
 #include "container.h"
 
+#define NULL ((void*)0)
+
 #define min(a, b) ((a) < (b) ? (a) : (b))
 static void itrunc(struct inode*);
 // there should be one superblock per disk device, but we run with
@@ -634,6 +636,14 @@ skipelem(char *path, char *name)
   return path;
 }
 
+int
+strcmp3(const char *p, const char *q)
+{
+  while(*p && *p == *q)
+    p++, q++;
+  return (uchar)*p - (uchar)*q;
+}
+
 // Look up and return the inode for a path name.
 // If parent != 0, return the inode for the parent and copy the final
 // path element into name, which must have room for DIRSIZ bytes.
@@ -648,12 +658,30 @@ namex(char *path, int nameiparent, char *name)
   else
     ip = idup(myproc()->cwd);
 
+  struct proc* p = myproc();
+  struct container* cont = NULL;
+  if(p != NULL){
+    cont = p->cont;
+  }
+
   while((path = skipelem(path, name)) != 0){
     ilock(ip);
+
     if(ip->type != T_DIR){
       iunlockput(ip);
       return 0;
     }
+
+    if(strncmp(path, "..",2) == 0 && cont != NULL && cont->root->inum == ip->inum){
+      iunlock(ip);
+      return ip;
+    }
+
+    if(cont != NULL && ip->inum == ROOTINO){
+      iunlock(ip);
+      return cont->root;
+    }
+
     if(nameiparent && *path == '\0'){
       // Stop one level early.
       iunlock(ip);
@@ -664,6 +692,7 @@ namex(char *path, int nameiparent, char *name)
       return 0;
     }
     iunlockput(ip);
+
     ip = next;
   }
   if(nameiparent){
@@ -671,21 +700,7 @@ namex(char *path, int nameiparent, char *name)
     return 0;
   }
 
-  // if(myproc()->cont != NULL){
-  //   struct inode* root_node = myproc()->cont->root;
-  //   if(root->inum == ip->inum){
-  //     return ip;
-  //   }
-  //   struct inode* temp = ip; 
-  //   while(temp){
-  //     if(root->inum == temp->inum){
-  //       return ip;
-  //     }
-  //     else{
-  //       temp = 
-  //     }
-  //   }
-  // }
+  
   return ip;
 }
 
