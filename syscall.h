@@ -48,3 +48,4 @@
 #define SYS_container_reset 47
 #define SYS_pause 48
 #define SYS_resume 49
+#define SYS_tmem 50

@@ -183,7 +183,7 @@ void container_reset(int vc_num){
 	strcpy(containers[vc_num].name, "");
 	containers[vc_num].max_proc = 4;
 	containers[vc_num].max_disk = 100;
-	containers[vc_num].max_mem = 200;
+	containers[vc_num].max_mem = 300;
 	containers[vc_num].curr_proc = 1;
 	containers[vc_num].curr_disk = 0;
 	containers[vc_num].curr_mem = 0;

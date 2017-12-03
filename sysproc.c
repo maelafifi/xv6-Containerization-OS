@@ -383,3 +383,8 @@ sys_resume(void){
   argstr(0, &name);
   resume(name);
 }
+
+int
+sys_tmem(void){
+  return mem_usage();
+}

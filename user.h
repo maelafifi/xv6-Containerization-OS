@@ -54,6 +54,7 @@ int mac_containers(void);
 void container_reset(int vc_num);
 void pause(char* name);
 void resume(char* name);
+int tmem(void);
 
 
 // ulib.c

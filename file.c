@@ -171,6 +171,7 @@ filewrite(struct file *f, char *addr, int n)
       ilock(f->ip);
       if ((r = writei(f->ip, addr + i, f->off, n1)) > 0){
         f->off += r;
+        //DISKUSE = DISKUSE + r;
         // int c_num = find(x);
         // if(c_num >= 0){
         //   set_curr_disk(r, c_num);

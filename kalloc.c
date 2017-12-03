@@ -26,6 +26,7 @@ struct {
   struct spinlock lock;
   int use_lock;
   struct run *freelist;
+  int i;
 } kmem;
 
 // Initialization happens in two phases.
@@ -46,6 +47,7 @@ kinit2(void *vstart, void *vend)
 {
   freerange(vstart, vend);
   kmem.use_lock = 1;
+  kmem.i = 0;
 }
 
 void
@@ -85,6 +87,7 @@ kfree(char *v)
   r = (struct run*)v;
   r->next = kmem.freelist;
   kmem.freelist = r;
+  kmem.i--;
   if(kmem.use_lock)
     release(&kmem.lock);
 }
@@ -103,6 +106,7 @@ kalloc(void)
   r = kmem.freelist;
   if(r)
     kmem.freelist = r->next;
+  kmem.i++;
   if((char*)r != 0){
     if(ticks > 0){
       int x = find(myproc()->cont->name);
@@ -119,4 +123,8 @@ kalloc(void)
   if(kmem.use_lock)
     release(&kmem.lock);
   return (char*)r;
+}
+
+int mem_usage(void){
+  return kmem.i;
 }
