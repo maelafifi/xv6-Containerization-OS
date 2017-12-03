@@ -129,6 +129,8 @@ extern int sys_cstop(void);
 extern int sys_df(void);
 extern int sys_max_containers(void);
 extern int sys_container_reset(void);
+extern int sys_pause(void);
+extern int sys_resume(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -178,6 +180,8 @@ static int (*syscalls[])(void) = {
 [SYS_df] sys_df,
 [SYS_max_containers] sys_max_containers,
 [SYS_container_reset] sys_container_reset,
+[SYS_pause] sys_pause,
+[SYS_resume] sys_resume,
 };
 
 void

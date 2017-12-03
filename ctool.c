@@ -57,25 +57,6 @@ void name(){
 	printf(1, "0: %s - %d SIZE: %d, 1: %s - %d, 2: %s - %d, 3: %s - %d\n", x, b, s, y, c, z, d, a, e);
 }
 
-char*
-fmtname(char *path)
-{
-  static char buf[DIRSIZ+1];
-  char *p;
-
-  // Find first character after last slash.
-  for(p=path+strlen(path); p >= path && *p != '/'; p--)
-    ;
-  p++;
-
-  // Return blank-padded name.
-  if(strlen(p) >= DIRSIZ)
-    return p;
-  memmove(buf, p, strlen(p));
-  memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));
-  return buf;
-}
-
 void
 add_file_size(char *path, char *c_name)
 {
@@ -84,37 +65,35 @@ add_file_size(char *path, char *c_name)
   struct dirent de;
   struct stat st;
   int z;
-  printf(1, "PATH: %s  C_NAME: %s",path, c_name);
 
   if((fd = open(path, 0)) < 0){
-    printf(2, "ls: cannot open %s\n", path);
+    printf(2, "df: cannot open %s\n", path);
     return;
   }
 
   if(fstat(fd, &st) < 0){
-    printf(2, "ls: cannot stat %s\n", path);
+    printf(2, "df: cannot stat %s\n", path);
     close(fd);
     return;
   }
 
   switch(st.type){
   case T_FILE:
-  	printf(1, "HERE \n");
   	z = find(c_name);
-  	printf(1, "Z = %d\n", z);
   	if(z >= 0){
+  		int before = get_curr_disk(z);
 	  	set_curr_disk(st.size, z);
-	  	printf(1, "adding %d \n", st.size);
+	  	int after = get_curr_disk(z);
+	  	if(before == after){
+	  		cstop(c_name);
+	  	}
 	}
     break;
 
   case T_DIR:
-  	printf(1, "HERE2 \n");
     if(strlen(path) + 1 + DIRSIZ + 1 > sizeof buf){
-      printf(1, "ls: path too long\n");
       break;
     }
-    printf(1, "HERE3 \n");
     strcpy(buf, path);
     p = buf+strlen(buf);
     *p++ = '/';
@@ -124,15 +103,17 @@ add_file_size(char *path, char *c_name)
       memmove(p, de.name, DIRSIZ);
       p[DIRSIZ] = 0;
       if(stat(buf, &st) < 0){
-        printf(1, "ls: cannot stat %s\n", buf);
+        printf(1, "df: cannot stat %s\n", buf);
         continue;
       }
-      printf(1, "HERE4 \n");
       int z = find(c_name);
-      printf(1, "Z = %d\n", z);
   	  if(z >= 0){
+  	  	int before = get_curr_disk(z);
 	  	set_curr_disk(st.size, z);
-	  	printf(1, "adding %d \n", st.size);
+	  	int after = get_curr_disk(z);
+	  	if(before == after){
+	  		cstop(c_name);
+	  	}
 	  }
     }
     break;
@@ -169,7 +150,6 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 	int fd, id;
 
 	fd = open(vc, O_RDWR);
-	//printf(1, "fd = %d\n", fd);
 
 	//TODO Check tosee file in file system
 	char c_name[16];
@@ -178,14 +158,13 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 	// chroot(dir);
 
 	/* fork a child and exec argv[1] */
-	// cont_proc_set(vc_num);
+	
+	dir = strcat("/" , dir);
+	add_file_size(dir, c_name);
+	cont_proc_set(vc_num);
 	id = fork();
 
 	if (id == 0){
-		cont_proc_set(vc_num);
-		dir = strcat("/" , dir);
-		//dir = strcat(dir, "/");
-		// add_file_size(dir, c_name);
 		close(0);
 		close(1);
 		close(2);
@@ -200,8 +179,6 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 }
 
 void start(char *s_args[]){
-	//int arg_size = (int) (sizeof(s_args)/sizeof(char*));
-	//int i;
 	int index = 0;
 	if((index = is_full()) < 0){
 		printf(1, "No Available Containers.\n");
@@ -213,8 +190,6 @@ void start(char *s_args[]){
 			x++;
 	}
 
-	// printf(1, "Open container at %d\n", index);
-
 	//Make a VC in use function that checks if that VC is in use by a container
 	char* vc = s_args[0];
 	char* dir = s_args[1];
@@ -224,11 +199,6 @@ void start(char *s_args[]){
 		printf(1, "Container already in use.\n");
 		return;
 	}
-	// printf(1,"succ\n");
-	
-	
-
-	//ASsume they give us the values for now
 	// set_max_proc(atoi(s_args[3]), index);
 	// set_max_mem(atoi(s_args[4]), index);
 	// set_max_disk(atoi(s_args[5]), index);
@@ -236,28 +206,17 @@ void start(char *s_args[]){
 	set_name(dir, index);
 	set_root_inode(dir);
 	attach_vc(vc, dir, file, index);
-	// cont_proc_set(index);
-	// printf(1, "attached.\n");
 
-	// for (i = 0; i < arg_size; ++i){
-	// 	if(s_args[i] == '-p'){
-	// 		// TODO container->max_procs = s_args[i+1];
-	// 	}
-	// 	else if(s_args[i] == '-m'){
-
-	// 	}
-	// 	else if(s_args[i] == '-d'){
-
-	// 	}
-	// }
-}
-
-void pause(char *c_name){
+	//TODO set container params
 
 }
 
-void resume(char *c_name){ 
+void cpause(char *c_name[]){
+	pause(c_name[0]);
+}
 
+void cresume(char *c_name[]){ 
+	resume(c_name[0]);
 }
 
 void stop(char *c_name[]){
@@ -265,7 +224,7 @@ void stop(char *c_name[]){
 	cstop(c_name[0]);
 }
 
-void info(char *c_name){
+void info(char *c_name[]){
 
 }
 
@@ -283,12 +242,12 @@ int main(int argc, char *argv[]){
 	else if(strcmp(argv[1], "name") == 0){
 		name();
 	}
-	// else if(argv[1] == 'pause'){
-	// 	pause(&argv[2]);
-	// }
-	// else if(argv[1] == 'resume'){
-	// 	resume(&argv[2]);
-	// }
+	else if(strcmp(argv[1],"pause") == 0){
+		cpause(&argv[2]);
+	}
+	else if(strcmp(argv[1],"resume") == 0){
+		cresume(&argv[2]);
+	}
 	else if(strcmp(argv[1],"stop") == 0){
 		stop(&argv[2]);
 	}
@@ -298,7 +257,7 @@ int main(int argc, char *argv[]){
 	else{
 		printf(1, "Improper usage; create, start, pause, resume, stop, info.\n");
 	}
-	printf(1, "Done with ctool\n");
+	printf(1, "Done with ctool %s\n", argv[1]);
 
 	exit();
 }

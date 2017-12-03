@@ -651,6 +651,7 @@ c_procdump(char* name)
 
     // cprintf("%s.\n", p->name);
     if(strcmp1(p->cont->name, name) == 0){
+      cprintf("STATE: %d \n", p->state);
       cprintf("%d %s %s %s", p->pid, name, state, p->name);
       if(p->state == SLEEPING){
         getcallerpcs((uint*)p->context->ebp+2, pc);
@@ -659,6 +660,38 @@ c_procdump(char* name)
       }
       cprintf("\n");
     }  
+  }
+}
+
+void
+pause(char* name)
+{
+  struct proc *p;
+  cprintf("inpause\n");
+  
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->state == UNUSED || p->cont == NULL)
+      continue;
+    if(strcmp1(p->cont->name, name) == 0){
+      p->state = ZOMBIE;
+    }
+  }
+}
+
+void
+resume(char* name)
+{
+  struct proc *p;
+  cprintf("inpause\n");
+  
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->state == ZOMBIE){
+      if(strcmp1(p->cont->name, name) == 0){
+        p->state = RUNNABLE;
+      }
+    }
   }
 }
 

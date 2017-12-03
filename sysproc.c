@@ -7,6 +7,7 @@
 #include "mmu.h"
 #include "proc.h"
 #include "container.h"
+#include "fs.h"
 
 #define NULL ((void*)0)
 
@@ -332,6 +333,11 @@ int sys_max_containers(void){
 
 void sys_df(void){
   struct container* cont = myproc()->cont;
+  struct superblock sb;
+  readsb(1, &sb);
+
+  cprintf("nblocks: %d\n", sb.nblocks);
+  cprintf("nblocks: %d\n", FSSIZE);
   int used = 0;
   if(cont == NULL){
     int max = max_containers();
@@ -339,12 +345,27 @@ void sys_df(void){
     for(i = 0; i < max; i++){
       used = used + (int)(get_curr_disk(i) / 1024);
     }
-    cprintf("Total Disk Used: ~%d / Total Disk Available: TBD\n", used);
+    cprintf("Total Disk Used: ~%d / Total Disk Available: %d\n", used, sb.nblocks);
   }
   else{
     int x = find(cont->name);
     int used = (int)(get_curr_disk(x) / 1024);
-    cprintf("Disk Used: ~%d / Disk Available: %d\n", used, get_max_disk(x));
+    cprintf("Disk Used: ~%d -- %d  / Disk Available: %d\n", used, get_curr_disk(x),  get_max_disk(x));
   }
 }
 
+
+
+void
+sys_pause(void){
+  char *name;
+  argstr(0, &name);
+  pause(name);
+}
+
+void
+sys_resume(void){
+  char *name;
+  argstr(0, &name);
+  resume(name);
+}

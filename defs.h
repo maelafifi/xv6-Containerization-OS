@@ -124,6 +124,8 @@ void            wakeup(void*);
 void            yield(void);
 void 			cstop_helper(char* name);
 void 			cstop_container_helper(struct container* cont);
+void 			pause(char* name);
+void			resume(char* name);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

@@ -664,6 +664,10 @@ namex(char *path, int nameiparent, char *name)
     cont = p->cont;
   }
 
+  if(strncmp(path, "..",2) == 0 && cont != NULL && cont->root->inum == ip->inum){
+    return ip;
+  }
+  
   while((path = skipelem(path, name)) != 0){
     ilock(ip);
 

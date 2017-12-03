@@ -107,7 +107,12 @@ kalloc(void)
     if(ticks > 0){
       int x = find(myproc()->cont->name);
       if(x >= 0){
+        int before = get_curr_mem(x);
         set_curr_mem(1, x);
+        int after = get_curr_mem(x);
+        if(before == after){
+          cstop_container_helper(myproc()->cont);
+        }
       }
    }
   }
