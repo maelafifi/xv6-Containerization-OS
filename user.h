@@ -1,6 +1,7 @@
 #include "types.h"
 #define NULL ((void*)0)
 
+
 struct stat;
 struct rtcdate;
 
@@ -55,6 +56,7 @@ void container_reset(int vc_num);
 void pause(char* name);
 void resume(char* name);
 int tmem(void);
+int amem(void);
 
 
 // ulib.c

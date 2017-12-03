@@ -128,3 +128,8 @@ kalloc(void)
 int mem_usage(void){
   return kmem.i;
 }
+
+int mem_avail(void){
+  int freebytes = ((P2V(4*1024*1024) - (void*)end) + (P2V(PHYSTOP) - P2V(4*1024*1024)))/4096;
+  return freebytes;
+}

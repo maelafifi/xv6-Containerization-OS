@@ -49,3 +49,4 @@
 #define SYS_pause 48
 #define SYS_resume 49
 #define SYS_tmem 50
+#define SYS_amem 51

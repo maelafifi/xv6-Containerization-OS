@@ -132,6 +132,7 @@ extern int sys_container_reset(void);
 extern int sys_pause(void);
 extern int sys_resume(void);
 extern int sys_tmem(void);
+extern int sys_amem(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -184,6 +185,7 @@ static int (*syscalls[])(void) = {
 [SYS_pause] sys_pause,
 [SYS_resume] sys_resume,
 [SYS_tmem] sys_tmem,
+[SYS_amem] sys_amem,
 };
 
 void

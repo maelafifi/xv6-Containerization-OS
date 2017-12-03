@@ -70,6 +70,7 @@ void            kfree(char*);
 void            kinit1(void*, void*);
 void            kinit2(void*, void*);
 int 			mem_usage(void);
+int 			mem_avail(void);
 
 // kbd.c
 void            kbdintr(void);

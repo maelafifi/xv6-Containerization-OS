@@ -386,5 +386,26 @@ sys_resume(void){
 
 int
 sys_tmem(void){
-  return mem_usage();
+  struct container* cont = myproc()->cont;
+
+  if(cont == NULL){
+    return mem_usage();
+  }
+  return get_curr_mem(find(cont->name));
 }
+
+int
+sys_amem(void){
+  struct container* cont = myproc()->cont;
+
+  if(cont == NULL){
+    return mem_avail();
+  }
+  return get_max_mem(find(cont->name));
+}
+
+
+
+
+
+
