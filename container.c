@@ -2,6 +2,7 @@
 #include "container.h"
 #include "types.h"
 #include "defs.h"
+#include "syscall.h"
 
 #define NULL ((void*)0)
 #define MAX_CONTAINERS 4
@@ -65,14 +66,13 @@ int is_full(){
 }
 
 int find(char* name){
-	//cprintf("in here");
 	int i;
+
 	for(i = 0; i < MAX_CONTAINERS; i++){
 		if(strcmp(name, "") == 0){
 			continue;
 		}
 		if(strcmp(name, containers[i].name) == 0){
-			//cprintf("in hereI");
 			return i;
 		}
 	}
@@ -132,13 +132,12 @@ void set_max_proc(int procs, int vc_num){
 }
 
 void set_curr_mem(int mem, int vc_num){
-	// if((containers[vc_num].curr_mem + 1) > containers[vc_num].max_mem){
-	// 	cprintf("Exceded memory resource; killing container");
-	// 	//cstop(containers[vc_num].name);
-	// }
-	// else{
+	if((containers[vc_num].curr_mem + 1) > containers[vc_num].max_mem){
+		cprintf("Exceded memory resource; killing container");
+	}
+	else{
 		containers[vc_num].curr_mem = containers[vc_num].curr_mem + 1;
-	//}
+	}
 }
 
 void reduce_curr_mem(int mem, int vc_num){
@@ -155,9 +154,8 @@ void set_curr_disk(int disk, int vc_num){
 }
 
 void set_curr_proc(int procs, int vc_num){
-	if((containers[vc_num].curr_proc + procs) > containers[vc_num].max_proc){
+	if(containers[vc_num].curr_proc + procs > containers[vc_num].max_proc){
 		cprintf("Exceded procs resource; killing container");
-		//cstop(containers[vc_num].name);
 	}
 	else{
 		containers[vc_num].curr_proc += procs;
@@ -174,8 +172,8 @@ void container_init(){
 		strcpy(containers[i].name, "");
 		containers[i].max_proc = 4;
 		containers[i].max_disk = 100;
-		containers[i].max_mem = 200;
-		containers[i].curr_proc = 0;
+		containers[i].max_mem = 300;
+		containers[i].curr_proc = 1;
 		containers[i].curr_disk = 0;
 		containers[i].curr_mem = 0;
 	}
@@ -186,7 +184,7 @@ void container_reset(int vc_num){
 	containers[vc_num].max_proc = 4;
 	containers[vc_num].max_disk = 100;
 	containers[vc_num].max_mem = 200;
-	containers[vc_num].curr_proc = 0;
+	containers[vc_num].curr_proc = 1;
 	containers[vc_num].curr_disk = 0;
 	containers[vc_num].curr_mem = 0;
 }

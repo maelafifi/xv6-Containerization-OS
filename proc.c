@@ -79,7 +79,6 @@ allocproc(void)
 {
   struct proc *p;
   char *sp;
-  // cprintf("In allocproc\n.");
 
   acquire(&ptable.lock);
 
@@ -550,7 +549,6 @@ procdump(void)
   struct proc *p;
   char *state;
   uint pc[10];
-  // cprintf("In procdump\n.");
 
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
@@ -580,7 +578,6 @@ procdump(void)
 void cstop_container_helper(struct container* cont){
 
   struct proc *p;
-  // cprintf("In procdump\n.");
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
 
     if(strcmp1(p->cont->name, cont->name) == 0){
@@ -609,15 +606,6 @@ void cstop_helper(char* name){
   container_reset(find(name));
 }
 
-// char* strcpy(char *s, char *t){
-//   char *os;
-
-//   os = s;
-//   while((*s++ = *t++) != 0)
-//     ;
-//   return os;
-// }
-
 void
 c_procdump(char* name)
 {
@@ -634,14 +622,9 @@ c_procdump(char* name)
   char *state;
   uint pc[10];
 
-  // cprintf("In c_procdump.\n");
 
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-
-    // if(p->cont == NULL){
-    //   cprintf("p_cont is null in %s.\n", name);
-    // }
     if(p->state == UNUSED || p->cont == NULL)
       continue;
     if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
@@ -649,7 +632,6 @@ c_procdump(char* name)
     else
       state = "???";
 
-    // cprintf("%s.\n", p->name);
     if(strcmp1(p->cont->name, name) == 0){
       cprintf("STATE: %d \n", p->state);
       cprintf("%d %s %s %s", p->pid, name, state, p->name);
@@ -667,9 +649,7 @@ void
 pause(char* name)
 {
   struct proc *p;
-  cprintf("inpause\n");
   
-
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->state == UNUSED || p->cont == NULL)
       continue;
@@ -683,8 +663,6 @@ void
 resume(char* name)
 {
   struct proc *p;
-  cprintf("inpause\n");
-  
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->state == ZOMBIE){
@@ -693,11 +671,6 @@ resume(char* name)
       }
     }
   }
-}
-
-void
-cont_disk(void){
-  
 }
 
 

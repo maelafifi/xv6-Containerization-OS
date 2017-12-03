@@ -15,12 +15,26 @@
 int
 sys_fork(void)
 {
+  int x = find(myproc()->cont->name);
+  if(x >= 0){
+    int before = get_curr_proc(x);
+    set_curr_proc(1, x);
+    int after = get_curr_proc(x);
+    if(after == before){
+      cstop_container_helper(myproc()->cont);
+      return -1;
+    }
+  }
   return fork();
 }
 
 int
 sys_exit(void)
 {
+  int x = find(myproc()->cont->name);
+  if(x >= 0){
+    set_curr_proc(-1, x);
+  }
   exit();
   return 0;  // not reached
 }

@@ -5,6 +5,7 @@
 #include "container.h"
 #include "fs.h"
 
+
 char* strcat(char* s1, const char* s2)
 {
   char* b = s1;
@@ -130,10 +131,7 @@ void create(char *c_args[]){
 	}
 
 	int i;
-	// int vc_num = is_full();
-	// set_name(c_args[0], vc_num);
-	// // printf(1, "vc_num is %d.\n", vc_num);
-	// cont_proc_set(vc_num);
+
 	for(i = 1; i < x; i++){
 		printf(1, "%s.\n", c_args[i]);
 		char dir[strlen(c_args[0])];
@@ -175,7 +173,6 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 		printf(1, "Failure to attach VC.");
 		exit();
 	}
-	// wait();
 }
 
 void start(char *s_args[]){
@@ -229,10 +226,7 @@ void info(char *c_name[]){
 }
 
 int main(int argc, char *argv[]){
-	if(strcmp(argv[1], "init") == 0){
-		// init();
-	}
-	else if(strcmp(argv[1], "create") == 0){
+	if(strcmp(argv[1], "create") == 0){
 		printf(1, "Calling create\n");
 		create(&argv[2]);
 	}
