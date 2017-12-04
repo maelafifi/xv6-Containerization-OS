@@ -59,6 +59,7 @@ void resume(char* name);
 int tmem(void);
 int amem(void);
 void c_ps(char*);
+int get_used(void);
 
 
 // ulib.c
@@ -74,3 +75,4 @@ void* memset(void*, int, uint);
 void* malloc(uint);
 void free(void*);
 int atoi(const char*);
+int itoa(int, char*, int);

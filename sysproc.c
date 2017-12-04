@@ -407,3 +407,15 @@ void sys_c_ps(void){
   argstr(0, &name);
   c_procdump(name);
 }
+
+int sys_get_used(void){
+  int x; 
+  argint(0, &x);
+  return get_used(x);
+}
+
+
+
+
+
+

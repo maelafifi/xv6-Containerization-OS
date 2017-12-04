@@ -81,6 +81,7 @@ kfree(char *v)
       int x = find(myproc()->cont->name);
       if(x >= 0){
         reduce_curr_mem(1, x);
+        myproc()->usage--;
       }
     }
   }
@@ -111,6 +112,7 @@ kalloc(void)
     if(ticks > 0){
       int x = find(myproc()->cont->name);
       if(x >= 0){
+        myproc()->usage++;
         int before = get_curr_mem(x);
         set_curr_mem(1, x);
         int after = get_curr_mem(x);

@@ -49,6 +49,19 @@ void get_name(int vc_num, char* name){
 		i++;
 	}
 	memcpy2(name, name2, i);
+	name[i] = '\0';
+}
+
+int get_used(){
+	int x = 0;
+	int i;
+	for(i = 0; i < MAX_CONTAINERS; i++){
+		if(strcmp(containers[i].name, "") == 0){
+			continue;
+		}
+		x++;
+	}
+	return x;
 }
 
 char* g_name(int vc_bun){
@@ -170,9 +183,9 @@ void container_init(){
 	int i;
 	for(i = 0; i < MAX_CONTAINERS; i++){
 		strcpy(containers[i].name, "");
-		containers[i].max_proc = 4;
+		containers[i].max_proc = 6;
 		containers[i].max_disk = 100;
-		containers[i].max_mem = 300;
+		containers[i].max_mem = 1000;
 		containers[i].curr_proc = 1;
 		containers[i].curr_disk = 0;
 		containers[i].curr_mem = 0;
@@ -181,7 +194,7 @@ void container_init(){
 
 void container_reset(int vc_num){
 	strcpy(containers[vc_num].name, "");
-	containers[vc_num].max_proc = 4;
+	containers[vc_num].max_proc = 6;
 	containers[vc_num].max_disk = 100;
 	containers[vc_num].max_mem = 300;
 	containers[vc_num].curr_proc = 1;

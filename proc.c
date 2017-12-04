@@ -17,6 +17,7 @@ struct {
 } ptable;
 
 static struct proc *initproc;
+static int holder = -1;
 
 int nextpid = 1;
 extern void forkret(void);
@@ -93,6 +94,7 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
 
+
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -118,16 +120,7 @@ found:
 
   p->ticks = 0;
   p->cont = NULL;
-  // if(initproc != NULL){
-  //   int x = find(myproc()->cont->name);
-  //   if(x >= 0){
-  //     set_curr_mem(1, x);
-  //   }
-  // }
-  //SUCC
-  // if(p->cont == NULL)
-  //   cprintf("p container is now null.\n");
-
+  // p->usage = 0;
   return p;
 }
 
@@ -359,9 +352,16 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
+  char name[16];
   
   for(;;){
-    // Enable interrupts on this processor.
+    int x = get_used();
+    if(holder == x){
+      holder = -1;
+    }
+    if(holder != -1){
+      get_name(holder, &name[0]);
+    }
     sti();
 
     // Loop over process table looking for process to run.
@@ -369,6 +369,19 @@ scheduler(void)
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
         continue;
+      if(holder == -1){
+        if(p->cont != NULL){
+          continue;
+        }
+      }
+      else{
+        if(p->cont == NULL){
+          continue;
+        }
+        if(strcmp1(p->cont->name, name) != 0){
+          continue;
+        }
+      }
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
@@ -385,6 +398,8 @@ scheduler(void)
       c->proc = 0;
     }
     release(&ptable.lock);
+    p->ticks++;
+    holder++;
 
   }
 }
@@ -560,10 +575,10 @@ procdump(void)
       state = "???";
 
     if(p->cont == NULL){
-      cprintf("%d root %s %s", p->pid, state, p->name);
+      cprintf("%d root %s %s TICKS: %d", p->pid, state, p->name, p->ticks);
     }
     else{
-      cprintf("%d %s %s %s", p->pid, p->cont->name, state, p->name);
+      cprintf("%d %s %s %s TICKS: %d", p->pid, p->cont->name, state, p->name, p->ticks);
     }
     if(p->state == SLEEPING){
       getcallerpcs((uint*)p->context->ebp+2, pc);
@@ -631,12 +646,8 @@ c_procdump(char* name)
       state = "???";
 
     if(strcmp1(p->cont->name, name) == 0){
-      cprintf("     Container: %s Process: %s PID: %d State: %s ", name, p->name, p->pid, state);
-      // if(p->state == SLEEPING){
-      //   getcallerpcs((uint*)p->context->ebp+2, pc);
-      //   for(i=0; i<10 && pc[i] != 0; i++)
-      //     cprintf(" %p", pc[i]);
-      // }
+      cprintf("     Container: %s Process: %s PID: %d State: %s Ticks: %d Usage: %d", 
+        name, p->name, p->pid, state, p->ticks, ticks);
       cprintf("\n");
     }  
   }

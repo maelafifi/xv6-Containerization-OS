@@ -1,0 +1,1 @@
+diskbomb.o: diskbomb.c
