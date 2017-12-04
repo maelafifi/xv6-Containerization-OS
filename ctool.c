@@ -221,7 +221,30 @@ void stop(char *c_name[]){
 	cstop(c_name[0]);
 }
 
-void info(char *c_name[]){
+void info(){
+	int num_c = max_containers();
+	int i;
+	for(i = 0; i < num_c; i++){
+		char name[32];
+		name[0] = '\0';
+		get_name(i, name);
+		if(strcmp(name, "") == 0){
+			//printf(1, "empty\n");
+			continue;
+		}
+		int m_used = get_curr_mem(i);
+		int d_used = get_curr_disk(i);
+		int p_used = get_curr_proc(i);
+		int m_max = get_max_mem(i);
+		int d_max = get_max_disk(i);
+		int p_max = get_max_proc(i);
+		printf(1, "Container: %s  Associated Directory: /%s\n", name , name);
+		printf(1, "     Mem: %d used/%d available.\n", m_used, m_max);
+		printf(1, "     Disk: %d used/%d available.\n", d_used, d_max);
+		printf(1, "     Proc: %d used/%d available.\n", p_used, p_max);
+		printf(1, "%s Processes\n", name);
+		c_ps(name);
+	}
 
 }
 
@@ -245,9 +268,9 @@ int main(int argc, char *argv[]){
 	else if(strcmp(argv[1],"stop") == 0){
 		stop(&argv[2]);
 	}
-	// else if(argv[1] == 'info'){
-	// 	info(&argv[2]);
-	// }
+	else if(strcmp(argv[1],"info") == 0){
+		info();
+	}
 	else{
 		printf(1, "Improper usage; create, start, pause, resume, stop, info.\n");
 	}

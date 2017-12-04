@@ -492,10 +492,8 @@ writei(struct inode *ip, char *src, uint off, uint n)
 
   if(ip->type == T_DEV){
     if(ip->major < 0 || ip->major >= NDEV || !devsw[ip->major].write){
-      cprintf("hello1");
       return -1;
     }
-    //cprintf("hello2");
     return devsw[ip->major].write(ip, src, n);
   }
 
@@ -504,7 +502,6 @@ writei(struct inode *ip, char *src, uint off, uint n)
     return -1;
   }
   if(off + n > MAXFILE*BSIZE){
-    cprintf("hello4");
     return -1;
   }
 
@@ -517,7 +514,6 @@ writei(struct inode *ip, char *src, uint off, uint n)
   }
 
   if(x >= 0){
-    cprintf("%d\n", tot);
     if(tot == 1){
       set_curr_disk(1, x);
     }

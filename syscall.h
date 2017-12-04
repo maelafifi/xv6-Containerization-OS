@@ -50,3 +50,4 @@
 #define SYS_resume 49
 #define SYS_tmem 50
 #define SYS_amem 51
+#define SYS_c_ps 52

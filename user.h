@@ -1,4 +1,5 @@
 #include "types.h"
+// #include "container.h"
 #define NULL ((void*)0)
 
 
@@ -57,6 +58,7 @@ void pause(char* name);
 void resume(char* name);
 int tmem(void);
 int amem(void);
+void c_ps(char*);
 
 
 // ulib.c

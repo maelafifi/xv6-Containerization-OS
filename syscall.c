@@ -133,6 +133,7 @@ extern int sys_pause(void);
 extern int sys_resume(void);
 extern int sys_tmem(void);
 extern int sys_amem(void);
+extern int sys_c_ps(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -186,6 +187,7 @@ static int (*syscalls[])(void) = {
 [SYS_resume] sys_resume,
 [SYS_tmem] sys_tmem,
 [SYS_amem] sys_amem,
+[SYS_c_ps] sys_c_ps,
 };
 
 void

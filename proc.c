@@ -617,12 +617,10 @@ c_procdump(char* name)
   [RUNNING]   "run   ",
   [ZOMBIE]    "zombie"
   };
-  int i;
+  //int i;
   struct proc *p;
   char *state;
-  uint pc[10];
-
-
+  //uint pc[10];
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->state == UNUSED || p->cont == NULL)
@@ -633,13 +631,12 @@ c_procdump(char* name)
       state = "???";
 
     if(strcmp1(p->cont->name, name) == 0){
-      cprintf("STATE: %d \n", p->state);
-      cprintf("%d %s %s %s", p->pid, name, state, p->name);
-      if(p->state == SLEEPING){
-        getcallerpcs((uint*)p->context->ebp+2, pc);
-        for(i=0; i<10 && pc[i] != 0; i++)
-          cprintf(" %p", pc[i]);
-      }
+      cprintf("     Container: %s Process: %s PID: %d State: %s ", name, p->name, p->pid, state);
+      // if(p->state == SLEEPING){
+      //   getcallerpcs((uint*)p->context->ebp+2, pc);
+      //   for(i=0; i<10 && pc[i] != 0; i++)
+      //     cprintf(" %p", pc[i]);
+      // }
       cprintf("\n");
     }  
   }

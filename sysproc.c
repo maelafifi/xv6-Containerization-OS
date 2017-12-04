@@ -368,8 +368,6 @@ void sys_df(void){
   }
 }
 
-
-
 void
 sys_pause(void){
   char *name;
@@ -404,8 +402,8 @@ sys_amem(void){
   return get_max_mem(find(cont->name));
 }
 
-
-
-
-
-
+void sys_c_ps(void){
+  char *name;
+  argstr(0, &name);
+  c_procdump(name);
+}
