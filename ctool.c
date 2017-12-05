@@ -176,6 +176,7 @@ void attach_vc(char* vc, char* dir, char* file[], int vc_num){
 		dup(fd);
 		dup(fd);
 		dup(fd);
+		printf(1, "FILE: %s\n", file[0]);
 		exec(file[0], &file[0]);
 		printf(1, "Failure to attach VC.");
 		exit();
@@ -201,15 +202,19 @@ void start(char *s_args[]){
 		printf(1, "Container already in use.\n");
 		return;
 	}
-	// set_max_proc(atoi(s_args[3]), index);
-	// set_max_mem(atoi(s_args[4]), index);
-	// set_max_disk(atoi(s_args[5]), index);
-
+	if(atoi(s_args[2]) != 0){ // proc
+		set_max_proc(atoi(s_args[2]), index);
+	}
+	if(atoi(s_args[3]) != 0){ // mem 
+		set_max_mem(atoi(s_args[3]), index);
+	}
+	if(atoi(s_args[4]) != 0){ // disk
+		set_max_disk(atoi(s_args[4]), index);
+	}
 	set_name(dir, index);
 	set_root_inode(dir);
-	attach_vc(vc, dir, &s_args[2], index);
+	attach_vc(vc, dir, &s_args[5], index);
 
-	//TODO set container params
 
 }
 
@@ -253,21 +258,41 @@ void info(){
 
 int main(int argc, char *argv[]){
 	if(strcmp(argv[1], "create") == 0){
+		if(argc < 3){
+			printf(1, "ctool create <name> <prog1> [ ... progn]\n");
+			exit();
+		}
 		create(&argv[2]);
 	}
 	else if(strcmp(argv[1], "start") == 0){
+		if(argc < 7){
+			printf(1, "ctool start <vc> <name> <max_proc> <max_mem> <max_disk> <prog> [prog args]\n");
+			exit();
+		}
 		start(&argv[2]);
 	}
 	else if(strcmp(argv[1], "name") == 0){
 		name();
 	}
 	else if(strcmp(argv[1],"pause") == 0){
+		if(argc < 2){
+			printf(1, "ctool pause <name>\n");
+			exit();
+		}
 		cpause(&argv[2]);
 	}
 	else if(strcmp(argv[1],"resume") == 0){
+		if(argc < 2){
+			printf(1, "ctool resume <name>\n");
+			exit();
+		}
 		cresume(&argv[2]);
 	}
 	else if(strcmp(argv[1],"stop") == 0){
+		if(argc < 2){
+			printf(1, "ctool stop <name>\n");
+			exit();
+		}
 		stop(&argv[2]);
 	}
 	else if(strcmp(argv[1],"info") == 0){
