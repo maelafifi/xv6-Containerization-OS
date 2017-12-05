@@ -66,6 +66,7 @@ add_file_size(char *path, char *c_name)
   struct dirent de;
   struct stat st;
   int z;
+  int holder = 0;
 
   if((fd = open(path, 0)) < 0){
     printf(2, "df: cannot open %s\n", path);
@@ -80,15 +81,18 @@ add_file_size(char *path, char *c_name)
 
   switch(st.type){
   case T_FILE:
-  	z = find(c_name);
-  	if(z >= 0){
-  		int before = get_curr_disk(z);
-	  	set_curr_disk(st.size, z);
-	  	int after = get_curr_disk(z);
-	  	if(before == after){
-	  		cstop(c_name);
-	  	}
+  	if(strcmp(c_name, "") != 0){
+	  	z = find(c_name);
+	  	if(z >= 0){
+	  		int before = get_curr_disk(z);
+		  	set_curr_disk(st.size, z);
+		  	int after = get_curr_disk(z);
+		  	if(before == after){
+		  		cstop(c_name);
+		  	}
+		}
 	}
+	holder += st.size;
     break;
 
   case T_DIR:
@@ -107,22 +111,29 @@ add_file_size(char *path, char *c_name)
         printf(1, "df: cannot stat %s\n", buf);
         continue;
       }
-      int z = find(c_name);
-  	  if(z >= 0){
-  	  	int before = get_curr_disk(z);
-	  	set_curr_disk(st.size, z);
-	  	int after = get_curr_disk(z);
-	  	if(before == after){
-	  		cstop(c_name);
-	  	}
-	  }
+      if(strcmp(c_name, "") != 0){
+	      int z = find(c_name);
+	  	  if(z >= 0){
+	  	  	int before = get_curr_disk(z);
+		  	set_curr_disk(st.size, z);
+		  	int after = get_curr_disk(z);
+		  	if(before == after){
+		  		cstop(c_name);
+		  	}
+		  }
+		}
+		holder += st.size;
     }
     break;
+  }
+  if(strcmp(c_name, "") == 0){
+  	set_os(holder);
   }
   close(fd);
 }
 
 void create(char *c_args[]){
+	add_file_size("", "");
 	mkdir(c_args[0]);
 	
 	int x = 0;
@@ -133,20 +144,17 @@ void create(char *c_args[]){
 	int i;
 
 	for(i = 1; i < x; i++){
-		printf(1, "%s.\n", c_args[i]);
 		char dir[strlen(c_args[0])];
 		strcpy(dir, c_args[0]);
 		strcat(dir, "/");
 		char* location = strcat(dir, c_args[i]);
-		printf(1, "Location: %s.\n", location);
 		copy_files(location, c_args[i]);
 	}
 
 }
 
-void attach_vc(char* vc, char* dir, char* file, int vc_num){
+void attach_vc(char* vc, char* dir, char* file[], int vc_num){
 	int fd, id;
-
 	fd = open(vc, O_RDWR);
 
 	//TODO Check tosee file in file system
@@ -156,7 +164,6 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 	// chroot(dir);
 
 	/* fork a child and exec argv[1] */
-	
 	dir = strcat("/" , dir);
 	add_file_size(dir, c_name);
 	cont_proc_set(vc_num);
@@ -169,7 +176,7 @@ void attach_vc(char* vc, char* dir, char* file, int vc_num){
 		dup(fd);
 		dup(fd);
 		dup(fd);
-		exec(file, &file);
+		exec(file[0], &file[0]);
 		printf(1, "Failure to attach VC.");
 		exit();
 	}
@@ -186,11 +193,9 @@ void start(char *s_args[]){
 	while(s_args[x] != 0){
 			x++;
 	}
-
-	//Make a VC in use function that checks if that VC is in use by a container
 	char* vc = s_args[0];
 	char* dir = s_args[1];
-	char* file = s_args[2];
+	//char* file = s_args[2];
 
 	if(find(dir) == 0){
 		printf(1, "Container already in use.\n");
@@ -202,7 +207,7 @@ void start(char *s_args[]){
 
 	set_name(dir, index);
 	set_root_inode(dir);
-	attach_vc(vc, dir, file, index);
+	attach_vc(vc, dir, &s_args[2], index);
 
 	//TODO set container params
 
@@ -217,7 +222,6 @@ void cresume(char *c_name[]){
 }
 
 void stop(char *c_name[]){
-	printf(1, "trying to stop container %s\n", c_name[0]);
 	cstop(c_name[0]);
 }
 
@@ -229,7 +233,6 @@ void info(){
 		name[0] = '\0';
 		get_name(i, name);
 		if(strcmp(name, "") == 0){
-			//printf(1, "empty\n");
 			continue;
 		}
 		int m_used = get_curr_mem(i);
@@ -250,7 +253,6 @@ void info(){
 
 int main(int argc, char *argv[]){
 	if(strcmp(argv[1], "create") == 0){
-		printf(1, "Calling create\n");
 		create(&argv[2]);
 	}
 	else if(strcmp(argv[1], "start") == 0){
@@ -274,7 +276,5 @@ int main(int argc, char *argv[]){
 	else{
 		printf(1, "Improper usage; create, start, pause, resume, stop, info.\n");
 	}
-	printf(1, "Done with ctool %s\n", argv[1]);
-
 	exit();
 }

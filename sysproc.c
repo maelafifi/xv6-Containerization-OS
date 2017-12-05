@@ -170,9 +170,11 @@ void sys_get_name(void){
 int sys_get_max_proc(void){
   int vc_num;
   argint(0, &vc_num);
-
-
   return get_max_proc(vc_num);  
+}
+
+int sys_get_os(void){
+  return get_os();
 }
 
 int sys_get_max_mem(void){
@@ -256,6 +258,11 @@ void sys_set_max_mem(void){
 
   set_max_mem(mem, vc_num);
 }
+void sys_set_os(void){
+  int os;
+  argint(0, &os);
+  set_os(os);
+}
 
 void sys_set_max_disk(void){
   int disk;
@@ -305,7 +312,6 @@ void sys_set_curr_disk(void){
   argint(1, &vc_num);
 
   set_curr_disk(disk, vc_num);
-  cprintf("ehehehehhe");
 }
 
 void sys_set_curr_proc(void){
@@ -357,6 +363,9 @@ void sys_df(void){
     int i;
     for(i = 0; i < max; i++){
       used = used + (int)(get_curr_disk(i) / 1024);
+      if(i == 0){
+        used += (int)(get_os() / 1024);
+      }
     }
     cprintf("~%d used out of %d available.\n", used, sb.nblocks);
   }
@@ -404,7 +413,8 @@ sys_amem(void){
 void sys_c_ps(void){
   char *name;
   argstr(0, &name);
-  c_procdump(name);
+  c_proc_data(name);
+  // c_procdump(name);
 }
 
 int sys_get_used(void){

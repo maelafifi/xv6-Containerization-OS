@@ -17,7 +17,12 @@ struct {
 } ptable;
 
 static struct proc *initproc;
-static int holder = -1;
+// static int holder = -1;
+
+// static int cont_1 = 0;
+// static int cont_2 = 0;
+//static int root = 0;
+
 
 int nextpid = 1;
 extern void forkret(void);
@@ -118,7 +123,7 @@ found:
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
 
-  p->ticks = 0;
+  //p->ticks = 0;
   p->cont = NULL;
   // p->usage = 0;
   return p;
@@ -226,6 +231,7 @@ fork(void)
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
+  np->ticks = 0;
 
   np->cont = curproc->cont;
   // if(curproc->cont != NULL){
@@ -352,36 +358,46 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
-  char name[16];
+  //char name[16];
   
   for(;;){
-    int x = get_used();
-    if(holder >= x){
-      holder = -1;
-    }
-    if(holder != -1){
-      get_name(holder, &name[0]);
-    }
     sti();
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
+
+    //cprintf("HOLDER: %d\n", holder);
+    // int x = get_used();
+    // if(holder >= x){
+    //   holder = -1;
+    // }
+    // if(holder != -1){
+    //   get_name(holder, &name[0]);
+    // }
+    // if(holder == 0){
+    //   cont_1++;
+    // }
+    // if(holder == 1){
+    //   cont_2++;
+    // }
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
+      if(p->state != RUNNABLE){
         continue;
-      if(holder == -1){
-        if(p->cont != NULL){
-          continue;
-        }
       }
-      else{
-        if(p->cont == NULL){
-          continue;
-        }
-        if(strcmp1(p->cont->name, name) != 0){
-          continue;
-        }
-      }
+      // if(holder == -1){
+      //   if(p->cont != NULL){
+      //     continue;
+      //   }
+      // }
+      // else{
+      //   if(p->cont == NULL){
+      //     continue;
+      //   }
+      //   if(strcmp1(p->cont->name, name) != 0){
+      //     //cprintf("%s AND %s AND %d\n CONT1: %d AND CONT2: %d\n", p->cont->name, name, holder, cont_1, cont_2);
+      //     continue;
+      //   }
+      // }
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
@@ -389,17 +405,25 @@ scheduler(void)
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
+      // if(p->cont != NULL){
+      //   if(strcmp1(p->cont->name, name) == 0){
+      //     p->ticks++;
+      //   }
+      //   else{
+      //     cprintf("wtf\n");
+      //   }
+      // }
 
       swtch(&(c->scheduler), p->context);
       switchkvm();
+      //p->ticks++;
 
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       c->proc = 0;
     }
     release(&ptable.lock);
-    p->ticks++;
-    holder++;
+   // holder++;
 
   }
 }
@@ -652,8 +676,54 @@ c_procdump(char* name)
       state = "???";
 
     if(strcmp1(p->cont->name, name) == 0){
-      cprintf("     Container: %s Process: %s PID: %d State: %s Ticks: %d Usage: %d", 
-        name, p->name, p->pid, state, p->ticks, ticks);
+      cprintf("     Container: %s Process: %s PID: %d State: %s Ticks: %d", 
+        name, p->name, p->pid, state, p->ticks);
+      cprintf("\n");
+    }  
+  }
+}
+
+void
+c_proc_data(char* name)
+{
+  static char *states[] = {
+  [UNUSED]    "unused",
+  [EMBRYO]    "embryo",
+  [SLEEPING]  "sleep ",
+  [RUNNABLE]  "runble",
+  [RUNNING]   "run   ",
+  [ZOMBIE]    "zombie"
+  };
+  int total = 0;
+  struct proc *p;
+  struct proc *x;
+  char *state;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->state == UNUSED || p->cont == NULL)
+      continue;
+    if(p->state >= 0 && p->state < NELEM(states) && states[p->state])
+      state = states[p->state];
+    else
+      state = "???";
+
+    if(strcmp1(p->cont->name, name) == 0){
+      total += p->ticks;
+    }
+  }
+  release(&ptable.lock);
+
+  for(x = ptable.proc; x < &ptable.proc[NPROC]; x++){
+    if(x->state == UNUSED || x->cont == NULL)
+      continue;
+    if(x->state >= 0 && x->state < NELEM(states) && states[x->state])
+      state = states[x->state];
+    else
+      state = "???";
+
+    if(strcmp1(x->cont->name, name) == 0){
+      cprintf("     Process: %s PID: %d State: %s Ticks: %d CPU Consumption: %d%%", 
+        x->name, x->pid, state, x->ticks, (x->ticks*100/total));
       cprintf("\n");
     }  
   }

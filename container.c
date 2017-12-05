@@ -1,4 +1,3 @@
-// #include "user.h"
 #include "container.h"
 #include "types.h"
 #include "defs.h"
@@ -97,6 +96,11 @@ int get_max_proc(int vc_num){
 	return x.max_proc;
 }
 
+int get_os(void){
+	struct container x = containers[0];
+	return x.os_sz;
+}
+
 struct container* get_container(int vc_num){
 	struct container* cont = &containers[vc_num];
 	return cont;
@@ -134,6 +138,10 @@ void set_name(char* name, int vc_num){
 
 void set_max_mem(int mem, int vc_num){
 	containers[vc_num].max_mem = mem;
+}
+
+void set_os(int os){
+	containers[0].os_sz = os;
 }
 
 void set_max_disk(int disk, int vc_num){

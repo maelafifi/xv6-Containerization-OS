@@ -52,3 +52,5 @@
 #define SYS_amem 51
 #define SYS_c_ps 52
 #define SYS_get_used 53
+#define SYS_get_os 54
+#define SYS_set_os 55

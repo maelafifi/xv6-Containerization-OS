@@ -39,7 +39,7 @@ forktest(void)
   int n, pid;
 
   printf(1, "fork test\n");
-  2f:	c7 44 24 04 ec 05 00 	movl   $0x5ec,0x4(%esp)
+  2f:	c7 44 24 04 fc 05 00 	movl   $0x5fc,0x4(%esp)
   36:	00 
   37:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   3e:	e8 bd ff ff ff       	call   0 <printf>
@@ -80,7 +80,7 @@ forktest(void)
     printf(1, "fork claimed to work N times!\n", N);
   7c:	c7 44 24 08 e8 03 00 	movl   $0x3e8,0x8(%esp)
   83:	00 
-  84:	c7 44 24 04 f8 05 00 	movl   $0x5f8,0x4(%esp)
+  84:	c7 44 24 04 08 06 00 	movl   $0x608,0x4(%esp)
   8b:	00 
   8c:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   93:	e8 68 ff ff ff       	call   0 <printf>
@@ -95,7 +95,7 @@ forktest(void)
   a4:	85 c0                	test   %eax,%eax
   a6:	79 19                	jns    c1 <forktest+0x98>
       printf(1, "wait stopped early\n");
-  a8:	c7 44 24 04 17 06 00 	movl   $0x617,0x4(%esp)
+  a8:	c7 44 24 04 27 06 00 	movl   $0x627,0x4(%esp)
   af:	00 
   b0:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   b7:	e8 44 ff ff ff       	call   0 <printf>
@@ -120,7 +120,7 @@ forktest(void)
   cf:	83 f8 ff             	cmp    $0xffffffff,%eax
   d2:	74 19                	je     ed <forktest+0xc4>
     printf(1, "wait got too many\n");
-  d4:	c7 44 24 04 2b 06 00 	movl   $0x62b,0x4(%esp)
+  d4:	c7 44 24 04 3b 06 00 	movl   $0x63b,0x4(%esp)
   db:	00 
   dc:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   e3:	e8 18 ff ff ff       	call   0 <printf>
@@ -129,7 +129,7 @@ forktest(void)
   }
 
   printf(1, "fork test OK\n");
-  ed:	c7 44 24 04 3e 06 00 	movl   $0x63e,0x4(%esp)
+  ed:	c7 44 24 04 4e 06 00 	movl   $0x64e,0x4(%esp)
   f4:	00 
   f5:	c7 04 24 01 00 00 00 	movl   $0x1,(%esp)
   fc:	e8 ff fe ff ff       	call   0 <printf>
@@ -1025,3 +1025,15 @@ SYSCALL(get_used)
  5e4:	b8 35 00 00 00       	mov    $0x35,%eax
  5e9:	cd 40                	int    $0x40
  5eb:	c3                   	ret    
+
+000005ec <get_os>:
+SYSCALL(get_os)
+ 5ec:	b8 36 00 00 00       	mov    $0x36,%eax
+ 5f1:	cd 40                	int    $0x40
+ 5f3:	c3                   	ret    
+
+000005f4 <set_os>:
+SYSCALL(set_os)
+ 5f4:	b8 37 00 00 00       	mov    $0x37,%eax
+ 5f9:	cd 40                	int    $0x40
+ 5fb:	c3                   	ret    

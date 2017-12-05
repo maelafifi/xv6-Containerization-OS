@@ -3,6 +3,7 @@
 struct container{ 
 	int max_mem, max_proc, max_disk;
 	int curr_mem, curr_proc, curr_disk;
+	int os_sz;
 	char name[32];
 	struct inode* root;
 	//char *progs[];
@@ -35,3 +36,5 @@ void set_root_inode(char* name);
 int max_containers();
 void container_reset(int vc_num);
 int get_used();
+int get_os();
+void set_os(int os);

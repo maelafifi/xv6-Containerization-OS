@@ -529,6 +529,7 @@ writei(struct inode *ip, char *src, uint off, uint n)
       int after = get_curr_disk(x);
       if(before == after){
         cstop_container_helper(myproc()->cont);
+        return -1;
       }
     }
   }

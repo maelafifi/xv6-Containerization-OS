@@ -60,6 +60,8 @@ int tmem(void);
 int amem(void);
 void c_ps(char*);
 int get_used(void);
+void set_os(int os);
+int get_os(void);
 
 
 // ulib.c
