@@ -11,7 +11,7 @@
 00000000 .debug_str
 00000000 .debug_loc
 00000000 ls.c
-00000ff0 buf.1119
+00000ff0 buf.1122
 00000000 ulib.c
 00000354 stosb
 00000000 printf.c

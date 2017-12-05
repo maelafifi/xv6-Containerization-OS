@@ -356,7 +356,7 @@ scheduler(void)
   
   for(;;){
     int x = get_used();
-    if(holder == x){
+    if(holder >= x){
       holder = -1;
     }
     if(holder != -1){

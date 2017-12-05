@@ -1,1 +1,1 @@
-void stop(char *c_name[]);
+int add_file_size(char *path, char *c_name)

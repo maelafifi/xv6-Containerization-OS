@@ -305,6 +305,7 @@ void sys_set_curr_disk(void){
   argint(1, &vc_num);
 
   set_curr_disk(disk, vc_num);
+  cprintf("ehehehehhe");
 }
 
 void sys_set_curr_proc(void){
@@ -350,8 +351,6 @@ void sys_df(void){
   struct superblock sb;
   readsb(1, &sb);
 
-  cprintf("nblocks: %d\n", sb.nblocks);
-  cprintf("nblocks: %d\n", FSSIZE);
   int used = 0;
   if(cont == NULL){
     int max = max_containers();
@@ -359,12 +358,12 @@ void sys_df(void){
     for(i = 0; i < max; i++){
       used = used + (int)(get_curr_disk(i) / 1024);
     }
-    cprintf("Total Disk Used: ~%d / Total Disk Available: %d\n", used, sb.nblocks);
+    cprintf("~%d used out of %d available.\n", used, sb.nblocks);
   }
   else{
     int x = find(cont->name);
     int used = (int)(get_curr_disk(x) / 1024);
-    cprintf("Disk Used: ~%d -- %d  / Disk Available: %d\n", used, get_curr_disk(x),  get_max_disk(x));
+    cprintf("~%d used out of %d available.\n", used,  get_max_disk(x));
   }
 }
 

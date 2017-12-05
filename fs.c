@@ -187,6 +187,12 @@ iinit(int dev)
  inodestart %d bmap start %d\n", sb.size, sb.nblocks,
           sb.ninodes, sb.nlog, sb.logstart, sb.inodestart,
           sb.bmapstart);
+  sb.size_avail = (sb.nblocks/2) * 1024;
+  sb.size_used = ((sb.size - sb.nblocks)/2) * 1024;
+
+  cprintf("dev %d\n", dev);
+  cprintf("avail %d\n", sb.size_avail);
+  cprintf("used %d\n", sb.size_used);
 }
 
 static struct inode* iget(uint dev, uint inum);
@@ -513,9 +519,17 @@ writei(struct inode *ip, char *src, uint off, uint n)
     brelse(bp);
   }
 
+
+  // void set_curr_disk(int disk, int vc_num){
+
   if(x >= 0){
-    if(tot == 1){
-      set_curr_disk(1, x);
+    if(tot>0){
+      int before = get_curr_disk(x);
+      set_curr_disk(tot, x);
+      int after = get_curr_disk(x);
+      if(before == after){
+        cstop_container_helper(myproc()->cont);
+      }
     }
   }
   if(n > 0 && off > ip->size){
