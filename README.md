@@ -10,12 +10,12 @@ off limits to the user when working in a container environment.
 # Implementation
 Just all about all aspects of the project were built on the following struct:
 
-struct container{ 
-	int max_mem, max_proc, max_disk; // container consumption limits
-	int curr_mem, curr_proc, curr_disk; // container current consumption
-	char name[32]; // container name
-	struct inode* root; // inode information for file system isolation
-};
+##### struct container{ 
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int max_mem, max_proc, max_disk; // container consumption limits
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int curr_mem, curr_proc, curr_disk; // container current consumption
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char name[32]; // container name
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct inode* root; // inode information for file system isolation
+##### };
 
 ## ps
 The ps program provides information about the currently running processes. In 
