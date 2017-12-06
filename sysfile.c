@@ -223,9 +223,9 @@ sys_unlink(void)
 
   char *c_name = myproc()->cont->name;
   int x = find(c_name);
-  int set = z/2;
   // cprintf("DECREMENTING %d \n", set);
-  set_curr_disk(-set, x);
+  set_os(-ip->size);
+  set_curr_disk(-ip->size, x);
   if(ip->type == T_DIR){
     dp->nlink--;
     iupdate(dp);

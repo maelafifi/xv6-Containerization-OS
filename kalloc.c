@@ -77,7 +77,7 @@ kfree(char *v)
 
   if(kmem.use_lock){
     acquire(&kmem.lock);
-    if(ticks > 1){
+    if(ticks > 0){
       int x = find(myproc()->cont->name);
       if(x >= 0){
         reduce_curr_mem(1, x);

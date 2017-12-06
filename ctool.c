@@ -58,43 +58,31 @@ void name(){
 	printf(1, "0: %s - %d SIZE: %d, 1: %s - %d, 2: %s - %d, 3: %s - %d\n", x, b, s, y, c, z, d, a, e);
 }
 
-void
-add_file_size(char *path, char *c_name)
+int
+add_file_size_disk(char *path, char *c_name)
 {
   char buf[512], *p;
   int fd;
   struct dirent de;
   struct stat st;
-  int z;
+  //int z;
   int holder = 0;
 
   if((fd = open(path, 0)) < 0){
     printf(2, "df: cannot open %s\n", path);
-    return;
+    return 0;
   }
 
   if(fstat(fd, &st) < 0){
     printf(2, "df: cannot stat %s\n", path);
     close(fd);
-    return;
+    return 0;
   }
 
   switch(st.type){
   case T_FILE:
-  	if(strcmp(c_name, "") != 0){
-	  	z = find(c_name);
-	  	if(z >= 0){
-	  		int before = get_curr_disk(z);
-		  	set_curr_disk(st.size, z);
-		  	int after = get_curr_disk(z);
-		  	if(before == after){
-		  		cstop(c_name);
-		  	}
-		}
-	}
-	holder += st.size;
+    holder += st.size;
     break;
-
   case T_DIR:
     if(strlen(path) + 1 + DIRSIZ + 1 > sizeof buf){
       break;
@@ -111,6 +99,12 @@ add_file_size(char *path, char *c_name)
         printf(1, "df: cannot stat %s\n", buf);
         continue;
       }
+      if(st.type == 1){
+      	if(strcmp(de.name, "..") != 0 && strcmp(de.name, ".") != 0){
+      		char *dir_name = strcat(de.name, "/");
+      		holder += add_file_size_disk(dir_name, "");
+      	}
+      }
       if(strcmp(c_name, "") != 0){
 	      int z = find(c_name);
 	  	  if(z >= 0){
@@ -126,14 +120,83 @@ add_file_size(char *path, char *c_name)
     }
     break;
   }
-  if(strcmp(c_name, "") == 0){
-  	set_os(holder);
+  close(fd);
+  printf(1, "SIZE %d\n", holder );
+  return holder;
+}
+
+void
+add_file_size(char *path, char *c_name)
+{
+  char buf[512], *p;
+  int fd;
+  struct dirent de;
+  struct stat st;
+  int z;
+
+  if((fd = open(path, 0)) < 0){
+    printf(2, "df: cannot open %s\n", path);
+    return;
+  }
+
+  if(fstat(fd, &st) < 0){
+    printf(2, "df: cannot stat %s\n", path);
+    close(fd);
+    return;
+  }
+
+  switch(st.type){
+  case T_FILE:
+  	printf(1, "%d \n", st.size);
+  	if(strcmp(c_name, "") != 0){
+	  	z = find(c_name);
+	  	if(z >= 0){
+	  		int before = get_curr_disk(z);
+		  	set_curr_disk(st.size, z);
+		  	int after = get_curr_disk(z);
+		  	if(before == after){
+		  		cstop(c_name);
+		  	}
+		}
+	}
+    break;
+
+  case T_DIR:
+    if(strlen(path) + 1 + DIRSIZ + 1 > sizeof buf){
+      break;
+    }
+    strcpy(buf, path);
+    p = buf+strlen(buf);
+    *p++ = '/';
+    while(read(fd, &de, sizeof(de)) == sizeof(de)){
+      if(de.inum == 0)
+        continue;
+      //printf(1, "DE name: %s\n DE type %d\n",de.type, de.tpye);
+      memmove(p, de.name, DIRSIZ);
+      p[DIRSIZ] = 0;
+      if(stat(buf, &st) < 0){
+        printf(1, "df: cannot stat %s\n", buf);
+        continue;
+      }
+      //printf(1, "BLAH %d \n", st.size);
+      if(strcmp(c_name, "") != 0){
+	      int z = find(c_name);
+	  	  if(z >= 0){
+	  	  	int before = get_curr_disk(z);
+		  	set_curr_disk(st.size, z);
+		  	int after = get_curr_disk(z);
+		  	if(before == after){
+		  		cstop(c_name);
+		  	}
+		  }
+		}
+    }
+    break;
   }
   close(fd);
 }
 
 void create(char *c_args[]){
-	add_file_size("", "");
 	mkdir(c_args[0]);
 	
 	int x = 0;
@@ -150,7 +213,6 @@ void create(char *c_args[]){
 		char* location = strcat(dir, c_args[i]);
 		copy_files(location, c_args[i]);
 	}
-
 }
 
 void attach_vc(char* vc, char* dir, char* file[], int vc_num){

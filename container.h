@@ -38,3 +38,4 @@ void container_reset(int vc_num);
 int get_used();
 int get_os();
 void set_os(int os);
+int add_file_size_dir(char* path, char* c_name);

@@ -521,7 +521,8 @@ writei(struct inode *ip, char *src, uint off, uint n)
 
 
   // void set_curr_disk(int disk, int vc_num){
-
+  //cprintf("TOTAL: %d\n", tot);
+  set_os(tot);
   if(x >= 0){
     if(tot>0){
       int before = get_curr_disk(x);
@@ -647,13 +648,6 @@ skipelem(char *path, char *name)
   return path;
 }
 
-int
-strcmp3(const char *p, const char *q)
-{
-  while(*p && *p == *q)
-    p++, q++;
-  return (uchar)*p - (uchar)*q;
-}
 
 // Look up and return the inode for a path name.
 // If parent != 0, return the inode for the parent and copy the final

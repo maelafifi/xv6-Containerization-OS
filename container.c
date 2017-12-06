@@ -5,6 +5,7 @@
 
 #define NULL ((void*)0)
 #define MAX_CONTAINERS 4
+int disk_used = 0;
 
 struct container containers[MAX_CONTAINERS];
 
@@ -97,8 +98,7 @@ int get_max_proc(int vc_num){
 }
 
 int get_os(void){
-	struct container x = containers[0];
-	return x.os_sz;
+	return disk_used;
 }
 
 struct container* get_container(int vc_num){
@@ -141,7 +141,7 @@ void set_max_mem(int mem, int vc_num){
 }
 
 void set_os(int os){
-	containers[0].os_sz = os;
+	disk_used += os;
 }
 
 void set_max_disk(int disk, int vc_num){

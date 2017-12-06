@@ -16,58 +16,58 @@ int main(int argc, char *argv[]){
    4:	56                   	push   %esi
    5:	53                   	push   %ebx
    6:	83 e4 f0             	and    $0xfffffff0,%esp
-   9:	83 ec 40             	sub    $0x40,%esp
+   9:	83 ec 50             	sub    $0x50,%esp
 	int pid;
 	if((pid = fork()) == 0){
    c:	e8 ef 03 00 00       	call   400 <fork>
-  11:	89 44 24 3c          	mov    %eax,0x3c(%esp)
-  15:	83 7c 24 3c 00       	cmpl   $0x0,0x3c(%esp)
+  11:	89 44 24 4c          	mov    %eax,0x4c(%esp)
+  15:	83 7c 24 4c 00       	cmpl   $0x0,0x4c(%esp)
   1a:	75 2a                	jne    46 <main+0x46>
-		char *executable[] = {"ctool","start", "vc0", "c1", "schedtest", "3", "1500", 0};
-  1c:	8d 54 24 14          	lea    0x14(%esp),%edx
+		char *executable[] = {"ctool","start", "vc0", "c1", "0","0","0", "schedtest", "3", "1500", 0};
+  1c:	8d 54 24 18          	lea    0x18(%esp),%edx
   20:	bb a0 0a 00 00       	mov    $0xaa0,%ebx
-  25:	b8 08 00 00 00       	mov    $0x8,%eax
+  25:	b8 0b 00 00 00       	mov    $0xb,%eax
   2a:	89 d7                	mov    %edx,%edi
   2c:	89 de                	mov    %ebx,%esi
   2e:	89 c1                	mov    %eax,%ecx
   30:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
 		exec("ctool", executable);
-  32:	8d 44 24 14          	lea    0x14(%esp),%eax
+  32:	8d 44 24 18          	lea    0x18(%esp),%eax
   36:	89 44 24 04          	mov    %eax,0x4(%esp)
   3a:	c7 04 24 60 0a 00 00 	movl   $0xa60,(%esp)
   41:	e8 fa 03 00 00       	call   440 <exec>
 	}
 	if((pid = fork()) == 0){
   46:	e8 b5 03 00 00       	call   400 <fork>
-  4b:	89 44 24 3c          	mov    %eax,0x3c(%esp)
-  4f:	83 7c 24 3c 00       	cmpl   $0x0,0x3c(%esp)
+  4b:	89 44 24 4c          	mov    %eax,0x4c(%esp)
+  4f:	83 7c 24 4c 00       	cmpl   $0x0,0x4c(%esp)
   54:	75 2a                	jne    80 <main+0x80>
-		char *executable[] = {"ctool","start", "vc2", "c2", "schedtest", "1", "1500", 0};
-  56:	8d 54 24 14          	lea    0x14(%esp),%edx
+		char *executable[] = {"ctool","start", "vc2", "c2","0","0","0","schedtest", "1", "1500", 0};
+  56:	8d 54 24 18          	lea    0x18(%esp),%edx
   5a:	bb e0 0a 00 00       	mov    $0xae0,%ebx
-  5f:	b8 08 00 00 00       	mov    $0x8,%eax
+  5f:	b8 0b 00 00 00       	mov    $0xb,%eax
   64:	89 d7                	mov    %edx,%edi
   66:	89 de                	mov    %ebx,%esi
   68:	89 c1                	mov    %eax,%ecx
   6a:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
 		exec("ctool", executable);
-  6c:	8d 44 24 14          	lea    0x14(%esp),%eax
+  6c:	8d 44 24 18          	lea    0x18(%esp),%eax
   70:	89 44 24 04          	mov    %eax,0x4(%esp)
   74:	c7 04 24 60 0a 00 00 	movl   $0xa60,(%esp)
   7b:	e8 c0 03 00 00       	call   440 <exec>
 	}
 	if((pid = fork()) == 0){
   80:	e8 7b 03 00 00       	call   400 <fork>
-  85:	89 44 24 3c          	mov    %eax,0x3c(%esp)
-  89:	83 7c 24 3c 00       	cmpl   $0x0,0x3c(%esp)
+  85:	89 44 24 4c          	mov    %eax,0x4c(%esp)
+  89:	83 7c 24 4c 00       	cmpl   $0x0,0x4c(%esp)
   8e:	75 24                	jne    b4 <main+0xb4>
 		char *executable[] = {"sh", 0};
-  90:	c7 44 24 34 66 0a 00 	movl   $0xa66,0x34(%esp)
+  90:	c7 44 24 44 66 0a 00 	movl   $0xa66,0x44(%esp)
   97:	00 
-  98:	c7 44 24 38 00 00 00 	movl   $0x0,0x38(%esp)
+  98:	c7 44 24 48 00 00 00 	movl   $0x0,0x48(%esp)
   9f:	00 
 		exec("sh", executable);
-  a0:	8d 44 24 34          	lea    0x34(%esp),%eax
+  a0:	8d 44 24 44          	lea    0x44(%esp),%eax
   a4:	89 44 24 04          	mov    %eax,0x4(%esp)
   a8:	c7 04 24 66 0a 00 00 	movl   $0xa66,(%esp)
   af:	e8 8c 03 00 00       	call   440 <exec>
@@ -1047,7 +1047,7 @@ printint(int fd, int xx, int base, int sgn)
  628:	ba 00 00 00 00       	mov    $0x0,%edx
  62d:	f7 f3                	div    %ebx
  62f:	89 d0                	mov    %edx,%eax
- 631:	8a 80 80 0d 00 00    	mov    0xd80(%eax),%al
+ 631:	8a 80 8c 0d 00 00    	mov    0xd8c(%eax),%al
  637:	88 44 0d dc          	mov    %al,-0x24(%ebp,%ecx,1)
   }while((x /= base) != 0);
  63b:	8b 75 10             	mov    0x10(%ebp),%esi
@@ -1197,7 +1197,7 @@ printf(int fd, char *fmt, ...)
  786:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
  78a:	75 09                	jne    795 <printf+0x100>
           s = "(null)";
- 78c:	c7 45 f4 00 0b 00 00 	movl   $0xb00,-0xc(%ebp)
+ 78c:	c7 45 f4 0c 0b 00 00 	movl   $0xb0c,-0xc(%ebp)
         while(*s != 0){
  793:	eb 1c                	jmp    7b1 <printf+0x11c>
  795:	eb 1a                	jmp    7b1 <printf+0x11c>
@@ -1309,7 +1309,7 @@ free(void *ap)
  84d:	83 e8 08             	sub    $0x8,%eax
  850:	89 45 f8             	mov    %eax,-0x8(%ebp)
   for(p = freep; !(bp > p && bp < p->s.ptr); p = p->s.ptr)
- 853:	a1 9c 0d 00 00       	mov    0xd9c,%eax
+ 853:	a1 a8 0d 00 00       	mov    0xda8,%eax
  858:	89 45 fc             	mov    %eax,-0x4(%ebp)
  85b:	eb 24                	jmp    881 <free+0x3d>
     if(p >= p->s.ptr && (bp > p || bp < p->s.ptr))
@@ -1403,7 +1403,7 @@ free(void *ap)
  919:	89 10                	mov    %edx,(%eax)
   freep = p;
  91b:	8b 45 fc             	mov    -0x4(%ebp),%eax
- 91e:	a3 9c 0d 00 00       	mov    %eax,0xd9c
+ 91e:	a3 a8 0d 00 00       	mov    %eax,0xda8
 }
  923:	c9                   	leave  
  924:	c3                   	ret    
@@ -1449,7 +1449,7 @@ morecore(uint nu)
  96e:	89 04 24             	mov    %eax,(%esp)
  971:	e8 ce fe ff ff       	call   844 <free>
   return freep;
- 976:	a1 9c 0d 00 00       	mov    0xd9c,%eax
+ 976:	a1 a8 0d 00 00       	mov    0xda8,%eax
 }
  97b:	c9                   	leave  
  97c:	c3                   	ret    
@@ -1472,18 +1472,18 @@ malloc(uint nbytes)
  98c:	40                   	inc    %eax
  98d:	89 45 ec             	mov    %eax,-0x14(%ebp)
   if((prevp = freep) == 0){
- 990:	a1 9c 0d 00 00       	mov    0xd9c,%eax
+ 990:	a1 a8 0d 00 00       	mov    0xda8,%eax
  995:	89 45 f0             	mov    %eax,-0x10(%ebp)
  998:	83 7d f0 00          	cmpl   $0x0,-0x10(%ebp)
  99c:	75 23                	jne    9c1 <malloc+0x44>
     base.s.ptr = freep = prevp = &base;
- 99e:	c7 45 f0 94 0d 00 00 	movl   $0xd94,-0x10(%ebp)
+ 99e:	c7 45 f0 a0 0d 00 00 	movl   $0xda0,-0x10(%ebp)
  9a5:	8b 45 f0             	mov    -0x10(%ebp),%eax
- 9a8:	a3 9c 0d 00 00       	mov    %eax,0xd9c
- 9ad:	a1 9c 0d 00 00       	mov    0xd9c,%eax
- 9b2:	a3 94 0d 00 00       	mov    %eax,0xd94
+ 9a8:	a3 a8 0d 00 00       	mov    %eax,0xda8
+ 9ad:	a1 a8 0d 00 00       	mov    0xda8,%eax
+ 9b2:	a3 a0 0d 00 00       	mov    %eax,0xda0
     base.s.size = 0;
- 9b7:	c7 05 98 0d 00 00 00 	movl   $0x0,0xd98
+ 9b7:	c7 05 a4 0d 00 00 00 	movl   $0x0,0xda4
  9be:	00 00 00 
   }
   for(p = prevp->s.ptr; ; prevp = p, p = p->s.ptr){
@@ -1526,14 +1526,14 @@ malloc(uint nbytes)
       }
       freep = prevp;
  a11:	8b 45 f0             	mov    -0x10(%ebp),%eax
- a14:	a3 9c 0d 00 00       	mov    %eax,0xd9c
+ a14:	a3 a8 0d 00 00       	mov    %eax,0xda8
       return (void*)(p + 1);
  a19:	8b 45 f4             	mov    -0xc(%ebp),%eax
  a1c:	83 c0 08             	add    $0x8,%eax
  a1f:	eb 38                	jmp    a59 <malloc+0xdc>
     }
     if(p == freep)
- a21:	a1 9c 0d 00 00       	mov    0xd9c,%eax
+ a21:	a1 a8 0d 00 00       	mov    0xda8,%eax
  a26:	39 45 f4             	cmp    %eax,-0xc(%ebp)
  a29:	75 1b                	jne    a46 <malloc+0xc9>
       if((p = morecore(nunits)) == 0)
