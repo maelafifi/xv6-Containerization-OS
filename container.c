@@ -154,7 +154,7 @@ void set_max_proc(int procs, int vc_num){
 
 void set_curr_mem(int mem, int vc_num){
 	if((containers[vc_num].curr_mem + 1) > containers[vc_num].max_mem){
-		cprintf("Exceded memory resource; killing container");
+		cprintf("Exceded memory resource; killing container\n");
 	}
 	else{
 		containers[vc_num].curr_mem = containers[vc_num].curr_mem + 1;
@@ -167,7 +167,7 @@ void reduce_curr_mem(int mem, int vc_num){
 
 void set_curr_disk(int disk, int vc_num){
 	if((containers[vc_num].curr_disk + disk)/1024 > containers[vc_num].max_disk){
-		cprintf("Exceded disk resource; killing container");
+		cprintf("Exceded disk resource; killing container\n");
 	}
 	else{
 		containers[vc_num].curr_disk += disk;
@@ -176,7 +176,7 @@ void set_curr_disk(int disk, int vc_num){
 
 void set_curr_proc(int procs, int vc_num){
 	if(containers[vc_num].curr_proc + procs > containers[vc_num].max_proc){
-		cprintf("Exceded procs resource; killing container");
+		cprintf("Exceded procs resource; killing container\n");
 	}
 	else{
 		containers[vc_num].curr_proc += procs;
@@ -193,8 +193,8 @@ void container_init(){
 		strcpy(containers[i].name, "");
 		containers[i].max_proc = 6;
 		containers[i].max_disk = 100;
-		containers[i].max_mem = 1000;
-		containers[i].curr_proc = 0;
+		containers[i].max_mem = 500;
+		containers[i].curr_proc = 1;
 		containers[i].curr_disk = 0;
 		containers[i].curr_mem = 0;
 	}
@@ -204,8 +204,8 @@ void container_reset(int vc_num){
 	strcpy(containers[vc_num].name, "");
 	containers[vc_num].max_proc = 6;
 	containers[vc_num].max_disk = 100;
-	containers[vc_num].max_mem = 300;
-	containers[vc_num].curr_proc = 0;
+	containers[vc_num].max_mem = 500;
+	containers[vc_num].curr_proc = 1;
 	containers[vc_num].curr_disk = 0;
 	containers[vc_num].curr_mem = 0;
 }
