@@ -8,7 +8,7 @@ within the scope of the container. All other files and processes are completely
 off limits to the user when working in a container environment. 
 
 # Implementation
-Just all about all aspects of the project were built on the following struct:
+Just about all aspects of the project were built on the following struct:
 
 ##### struct container{ 
 ##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int max_mem, max_proc, max_disk; // container consumption limits
