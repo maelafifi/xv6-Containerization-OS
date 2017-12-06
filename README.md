@@ -67,6 +67,32 @@ Resume resumes a container, setting all of its processes back to a runnable stat
 Info provides information about the currently running containers, including the 
 consumption of a given process for a particular container. 
 
+## Process Isolation:
+In this project, we needed to make sure that the processes were isolated from each other.
+However, we also needed to make sure that the root console was able to access everything.
+To achieve Process Isolation, we added a pointer to the current container struct inside of
+the proc struct. Initially, whenever we allocate a new process we make the struct pointer 
+null, and make it inherit the parent's pointer to a container. We only set the processes 
+container once we actually start up a container. To make sure a process was only touching 
+its own processes, we added checks to see if the current process executing a command was a 
+container, or the root. If it was the root, we execute like normal, and if it was the container,
+we had to make sure it only performed actions on its own processes and return if it wasnt 
+able to.
+
+## File Isolation:
+
+File Isolation was was achieved by manipulating inodes and the namex function. To start, we 
+added a pointer to the inode of the containers directory and set it when we started a container.
+From there, whenever we were in a container we wanted to check to see if anything we did with cd,
+ls, or mkdir would move us outside of the file system, and if it did we returned the root inode 
+instead. 
+
+## Fair Scheduling
+To implement fair scheduling on processes, we implemented a round robin type scheme 
+which essentially chooses a process only from the container whose turn it currently is.
+This is accomplished using a simple holder variable; the holder variable determines if
+processes in root, container1, container2... containerN should be executed at that moment.
+
 
 
 
