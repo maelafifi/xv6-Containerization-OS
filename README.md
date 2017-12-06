@@ -8,6 +8,15 @@ within the scope of the container. All other files and processes are completely
 off limits to the user when working in a container environment. 
 
 # Implementation
+Just all about all aspects of the project were built on the following struct:
+
+struct container{ 
+	int max_mem, max_proc, max_disk; // container consumption limits
+	int curr_mem, curr_proc, curr_disk; // container current consumption
+	char name[32]; // container name
+	struct inode* root; // inode information for file system isolation
+};
+
 ## ps
 The ps program provides information about the currently running processes. In 
 root, the ps program will display all currently running processes, including 
@@ -57,6 +66,8 @@ Resume resumes a container, setting all of its processes back to a runnable stat
 ### info
 Info provides information about the currently running containers, including the 
 consumption of a given process for a particular container. 
+
+
 
 
 xv6 is a re-implementation of Dennis Ritchie's and Ken Thompson's Unix

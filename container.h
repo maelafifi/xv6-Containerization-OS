@@ -6,7 +6,6 @@ struct container{
 	int os_sz;
 	char name[32];
 	struct inode* root;
-	//char *progs[];
 };
 
 //TODO Maybe add a vc so we know if a VC is already taken
