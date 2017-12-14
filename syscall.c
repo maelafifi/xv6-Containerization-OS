@@ -137,6 +137,8 @@ extern int sys_c_ps(void);
 extern int sys_get_used(void);
 extern int sys_get_os(void);
 extern int sys_set_os(void);
+extern int sys_get_cticks(void);
+extern int sys_tick_reset2(void);
 
 
 static int (*syscalls[])(void) = {
@@ -195,6 +197,8 @@ static int (*syscalls[])(void) = {
 [SYS_get_used] sys_get_used,
 [SYS_get_os] sys_get_os,
 [SYS_set_os] sys_set_os,
+[SYS_get_cticks] sys_get_cticks,
+[SYS_tick_reset2] sys_tick_reset2,
 };
 
 void

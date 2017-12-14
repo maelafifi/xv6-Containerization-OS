@@ -423,6 +423,14 @@ int sys_get_used(void){
   return get_used(x);
 }
 
+int sys_get_cticks(void){
+  return get_cticks();
+}
+
+void sys_tick_reset2(void){
+  tick_reset2();
+}
+
 
 
 

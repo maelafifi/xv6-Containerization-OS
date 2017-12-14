@@ -226,6 +226,7 @@ void attach_vc(char* vc, char* dir, char* file[], int vc_num){
 	// chroot(dir);
 
 	/* fork a child and exec argv[1] */
+	//tick_reset2();
 	dir = strcat("/" , dir);
 	add_file_size(dir, c_name);
 	cont_proc_set(vc_num);
@@ -276,8 +277,6 @@ void start(char *s_args[]){
 	set_name(dir, index);
 	set_root_inode(dir);
 	attach_vc(vc, dir, &s_args[5], index);
-
-
 }
 
 void cpause(char *c_name[]){

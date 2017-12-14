@@ -62,6 +62,8 @@ void c_ps(char*);
 int get_used(void);
 void set_os(int os);
 int get_os(void);
+int get_cticks(void);
+void tick_reset2(void);
 
 
 // ulib.c

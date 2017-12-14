@@ -54,3 +54,5 @@
 #define SYS_get_used 53
 #define SYS_get_os 54
 #define SYS_set_os 55
+#define SYS_get_cticks 56
+#define SYS_tick_reset2 57

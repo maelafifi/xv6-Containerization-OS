@@ -6,6 +6,7 @@
 #define NULL ((void*)0)
 #define MAX_CONTAINERS 4
 int disk_used = 0;
+int next = 1;
 
 struct container containers[MAX_CONTAINERS];
 
@@ -187,6 +188,32 @@ int max_containers(){
 	return MAX_CONTAINERS;
 }
 
+int rand(void) // RAND_MAX assumed to be 32767
+{
+    next = next * 1103515245 + 12345;
+    return (unsigned int)(next/65536) % 7;
+}
+
+int get_cticks(){
+	if(get_used() == 0){
+		return -1;
+	}
+	else if(rand() == 0){
+		return -1;
+	}
+	else{
+		int i;
+		int c_num = 0;
+		int holder = containers[0].ticks;
+		for(i = 0; i < MAX_CONTAINERS; i++){
+			if(containers[i].ticks < holder && strcmp(containers[i].name, "") != 0){
+				c_num = i;
+			}
+		}
+		return c_num;
+	}
+}
+
 void container_init(){
 	int i;
 	for(i = 0; i < MAX_CONTAINERS; i++){
@@ -197,8 +224,17 @@ void container_init(){
 		containers[i].curr_proc = 1;
 		containers[i].curr_disk = 0;
 		containers[i].curr_mem = 0;
+		containers[i].ticks = 0;
 	}
 }
+
+void tick_reset2(){
+	int i;
+	for(i = 0; i < MAX_CONTAINERS; i++){
+		containers[i].ticks = 0;
+	}
+}
+
 
 void container_reset(int vc_num){
 	strcpy(containers[vc_num].name, "");
@@ -208,6 +244,7 @@ void container_reset(int vc_num){
 	containers[vc_num].curr_proc = 1;
 	containers[vc_num].curr_disk = 0;
 	containers[vc_num].curr_mem = 0;
+	containers[vc_num].ticks = 0;
 }
 
 

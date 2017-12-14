@@ -17,7 +17,6 @@ struct {
 } ptable;
 
 static struct proc *initproc;
-static int holder = -1;
 
 // static int cont_1 = 0;
 // static int cont_2 = 0;
@@ -365,10 +364,7 @@ scheduler(void)
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
-    int x = get_used();
-    if(holder >= x){
-      holder = -1;
-    }
+    int holder = get_cticks();
     if(holder != -1){
       get_name(holder, &name[0]);
     }
@@ -389,6 +385,10 @@ scheduler(void)
       if(p->state != RUNNABLE){
         continue;
       }
+      // if(p+1 == &ptable.proc[NPROC]){
+      //   int holder = get_holder();
+      //   set_holder(holder);
+      // }
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
@@ -404,8 +404,6 @@ scheduler(void)
       c->proc = 0;
     }
     release(&ptable.lock);
-  holder++;
-
   }
 }
 

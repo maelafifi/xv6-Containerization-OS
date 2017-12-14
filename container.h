@@ -6,6 +6,7 @@ struct container{
 	int os_sz;
 	char name[32];
 	struct inode* root;
+	int ticks;
 };
 
 //TODO Maybe add a vc so we know if a VC is already taken
@@ -38,3 +39,5 @@ int get_used();
 int get_os();
 void set_os(int os);
 int add_file_size_dir(char* path, char* c_name);
+int get_cticks();
+void tick_reset2();
